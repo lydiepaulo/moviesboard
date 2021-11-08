@@ -1,0 +1,19 @@
+//fonts
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;600&display=swap');
+
+//utilities
+@import "./utilities/breakpoints";
+@import "./utilities/reset";
+@import "./utilities/colors";
+@import "./utilities/fonts";
+
+//components
+@import "./components/navbar";
+
+//pages
+@import "./pages/global";
+@import "./pages/home";
+@import "./pages/add";
+@import "./pages/details";
+@import "./pages/edit";
+@import "./pages/error";

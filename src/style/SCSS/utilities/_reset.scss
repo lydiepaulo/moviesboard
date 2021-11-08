@@ -1,0 +1,47 @@
+*,
+*:before,
+*:after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+hr {
+    margin-top: 5px;
+    border: none;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    font-weight: inherit;
+    font-size: inherit;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+img {
+    display: block;
+}
+
+ul {
+    list-style-type: none;
+}
+
+input,
+button {
+    background-color: inherit;
+    border: inherit;
+    color: inherit;
+    font-family: inherit;
+    outline: none;
+}
+
+button {
+    cursor: pointer;
+}
