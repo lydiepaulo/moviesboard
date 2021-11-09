@@ -1,0 +1,89 @@
+.card {
+    flex-shrink: 0;
+    display: grid;
+    width: 250px;
+    height: 400px;
+    background-color: $base-2;
+    padding: 10px;
+    border-radius: 20px;
+    box-shadow: 0 10px 10px $base-dark, inset 0 0 40px $base-light;
+
+    &:not(:first-of-type) {
+        margin-left: 30px;
+    }
+
+    & > * {
+        grid-row: 1;
+        grid-column: 1;
+    }
+
+    img {
+        z-index: 1;
+        width: 230px;
+        height: 345px;
+        object-fit: cover;
+        border-radius: 15px;
+        transition: .5s height;
+        box-shadow: 0 5px 10px $base-dark;
+    }
+
+    &:hover img {
+        height: 200px;
+        object-position: bottom;
+    }
+
+    figcaption {
+        align-self: end;
+        text-align: center;
+
+        div {
+            overflow: auto;
+            height: 0;
+            visibility: hidden;
+            opacity: 0;
+            transition: .5s height, .5s visibility, 1s .5s opacity;
+
+            span {
+                width: 100%;
+                text-align: center;
+            }
+
+            p {
+                text-align: justify;
+            }
+        }
+    }
+
+    &:hover figcaption div {
+        visibility: visible;
+        opacity: 1;         
+        height: 150px;
+    }
+}
+
+/* @keyframes apparition {
+    0% {
+        display: none;
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 0;
+        height: 150px;
+    }
+
+    100% {
+        opacity: 1;
+        height: 150px;
+    }
+}
+
+@keyframes disapparition {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+} */
