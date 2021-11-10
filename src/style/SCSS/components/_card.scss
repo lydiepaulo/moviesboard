@@ -6,7 +6,8 @@
     background-color: $base-2;
     padding: 10px;
     border-radius: 20px;
-    box-shadow: 0 10px 10px $base-dark, inset 0 0 40px $base-light;
+    border: 1px solid $base-light;
+    box-shadow: 0 75px 55px -20px $base-dark, inset 0 0 40px $base-light;
 
     &:not(:first-of-type) {
         margin-left: 30px;

@@ -3,7 +3,7 @@ import Navbar from '../components/Navbar';
 import MoviesService from '../services/MoviesService';
 
 const Home = () => {
-    // Données de la carte
+    // Data
     const [movieData, setMovieData] = useState(null);
     const [moreData, setMoreData] = useState(null);
     const inputRef = useRef();

@@ -1,0 +1,18 @@
+.form {
+    &__error-message {
+        color: red;
+    }
+
+    section {
+        &.block {
+            display: block;
+        }
+        &.hidden {
+            display: none;
+        }
+    }
+
+    button:disabled {
+        color: lightgrey;
+    }
+}

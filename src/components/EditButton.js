@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaUserEdit } from "react-icons/fa";
+import { MdMovieFilter } from 'react-icons/md';
 
 const EditButton = (id) => {
     return (
             <Link to={{ pathname: `/edit/${id}` }}>
-                <FaUserEdit />
+                <MdMovieFilter /> Éditer
             </Link>
         
     );
