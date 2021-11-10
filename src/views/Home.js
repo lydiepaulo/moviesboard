@@ -1,33 +1,89 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Navbar from '../components/Navbar';
 import MoviesService from '../services/MoviesService';
 import Card from '../components/Card';
 
 const Home = () => {
     const [myMovies, setMyMovies] = useState(null);
+    const inputRef = useRef();
+    const filterRef = useRef();
 
-    useEffect(() => {
+    //function : fetch all movies
+    const displayAllMovies = () => {
         MoviesService.fetchMovies()
+        .then((myApiResult) => {
+            if (myApiResult !== "") {
+                setMyMovies(myApiResult);
+                console.log(myApiResult);
+            }
+        });
+    }
+    //display all movies by default
+    useEffect(() => {
+        displayAllMovies();
+    }, []);
+
+    //function : fetch by filter
+    const displayFilteredMovies = (filter, searchValue) => {
+        if (searchValue !== "") {
+            MoviesService.fetchMovies(undefined, filter, searchValue)
             .then((myApiResult) => {
                 setMyMovies(myApiResult);
             });
-    }, []);
+        }
+    };
+    
+    //select a filter method
+    const filteredSearch = (e) => {
+        filterRef.current.value = e.target.value;
+        if (filterRef.current.value === "Tout") {
+            displayAllMovies();
+        } 
 
-    console.log(myMovies);
+        else {
+            if (inputRef.current.value !== "") {
+                displayFilteredMovies(filterRef.current.value, inputRef.current.value)
+            }
+        }
+    }
+
+    const onKeyDown = (e) => {
+        if(e.keyCode === 13){
+            if (e.target.value !== "") {
+                displayFilteredMovies(filterRef.current.value, inputRef.current.value)
+            }
+        }
+    }
 
     return (
-        <div class="pages-background">
+        <div className="pages-background">
             <Navbar />
-            <main className="home-main">
-                <h1 className="title-large">Test</h1>
-                <div className="home__horizontal-scroll">
-                    {myMovies &&
-                        myMovies.map((data) => (
-                            <Card key={data.id} id={data.id} data={data} />
-                        ))
-                    }
-                </div>
-            </main>
+                <main className="home-main">
+                    <h1 className="title-large">Test</h1>
+
+
+
+                    {/* DEMANDER À THIERRY : BALISES FORM ???? */}
+                        <span className="home__search-bar">
+                            <input ref={inputRef} onKeyDown={onKeyDown} type="text" placeholder="Titre, date de sortie, catégorie" id="search-bar" />
+                        </span>
+                        <select ref={filterRef} onChange={filteredSearch} name="filter" id="filter-select">
+                            <option value="title_like">Titre</option>
+                            <option value="release_date_like">Date de sortie</option>
+                            <option value="categories_like">Catégories</option>
+                        </select>
+
+
+
+
+                    <div className="home__horizontal-scroll">
+                        {myMovies &&
+                            myMovies.map((data) => (
+                                <Card key={data.id} id={data.id} data={data} />
+                            ))
+                        }
+                    </div>
+                </main>
         </div>
     );
 };

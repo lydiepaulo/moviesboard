@@ -19,9 +19,6 @@ const Navbar = () => {
                 <li>
                     <NavLink exact="true" to="/add" className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}>Ajouter</NavLink>
                 </li>
-                <li>
-                    <NavLink exact="true" to="/edit" className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}>Modifier</NavLink>
-                </li>
             </ul>
         </nav>
     );

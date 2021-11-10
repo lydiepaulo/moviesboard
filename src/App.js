@@ -2,6 +2,7 @@ import './style/SCSS/App.scss';
 import Home from './views/Home';
 import Add from './views/Add';
 import Edit from './views/Edit';
+import Details from './views/Details';
 import Error from './views/Error';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -12,7 +13,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/add" element={<Add />} />
-          <Route path="/edit" element={<Edit />} />
+          <Route path="/movies/:id" element={<Details />} />
+          <Route path="/edit/:id" element={<Edit />} />
           <Route component={Error} />
         </Routes>
       </BrowserRouter>
