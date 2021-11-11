@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useForm, useFormState, useFieldArray } from "react-hook-form";
+import { useForm, useFormState } from "react-hook-form";
 /* import { GrPrevious } from "react-icons/gr"; */
 
 
@@ -154,7 +154,6 @@ const Form = (props) => {
                         id="poster"
                         placeholder="https://example.com"
                         pattern="https://.*"
-                        size="30"
                         {...register("poster")}
                     />
                 </fieldset>
@@ -177,20 +176,38 @@ const Form = (props) => {
                 <fieldset>
                     <label htmlFor="actors">
                         <span>Acteur·ice·s</span>
-                        {["Zoe Saldana", "Zendaya", "Timothée Chalamet"].map((actors) => (
-                            <label key={actors.id}>
-                                <input
-                                    type="text"
-                                    name="actors"
-                                    {...register("actors", {
-                                        required: {
-                                            value: "Required",
-                                            message: "Veuillez choisir des acteur·ice·s."
-                                        },
-                                    })}
-                                />
-                            </label>
-                        ))}
+                            <ul>
+                            {["Zoe Saldana", "Zendaya", "Timothée Chalamet"].map((actors, index) => {
+                              return (
+                                <li key={actors.id}>
+                                    <label htmlFor={`actors.${index}.photo`}>Photo</label>
+                                    <input
+                                        type="url"
+                                        name={`actors.${index}.photo`}
+                                        placeholder="https://example.com"
+                                        pattern="https://.*"
+                                        id={`${index}`}
+                                        {...register(`actors.${index}.photo`)}
+                                    />
+
+                                    <label htmlFor={`actors.${index}.name`}>Acteur·ice</label>
+                                    <input
+                                        type="text"
+                                        name={`actors.${index}.name`}
+                                        id={`${index}`}
+                                        {...register(`actors.${index}.name`)} />
+
+                                    <label htmlFor={`actors.${index}.character`}>Rôle</label>
+                                    <input
+                                        type="text"
+                                        name={`actors.${index}.character`}
+                                        id={`${index}`}
+                                        {...register(`actors.${index}.character`)}
+                                    />
+                                </li>
+                              );
+                            })}
+                          </ul>
                         <div>
 
                         </div>
