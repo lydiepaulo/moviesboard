@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useForm, useFormState } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 /* import { GrPrevious } from "react-icons/gr"; */
 
 
@@ -36,8 +36,9 @@ const Form = (props) => {
     // FORM STEPS
     const {
         watch,
+        control,
         register,
-        formState: { errors },
+        formState: { errors, isValid },
         handleSubmit,
     } = useForm({
         mode: "all",
@@ -48,18 +49,35 @@ const Form = (props) => {
             categories: [],
             poster: "",
             backdrop: "",
-            actors: [{ photo: "https://static1.ozap.com/articles/9/44/03/59/@/4441736-vanessa-paradis-128x128-1.jpg", name: "vanessa paradis", character: "joe le taxi" }],
-            similar_movies: [{ poster: "https://m.media-amazon.com/images/I/510fWlbNvNL._AC_.jpg", title: "spider-bidule", release_date: "2012-12-12" }]
+            actors: [],
+            similar_movies: []
         }
     });
+/* actors : { photo: "https://static1.ozap.com/articles/9/44/03/59/@/4441736-vanessa-paradis-128x128-1.jpg", name: "vanessa paradis", character: "joe le taxi" },{ photo: "https://static1.ozap.com/articles/9/44/03/59/@/4441736-vanessa-paradis-128x128-1.jpg", name: "vanessa paradis", character: "joe le taxi" } */
+/* similar : movies { poster: "https://m.media-amazon.com/images/I/510fWlbNvNL._AC_.jpg", title: "spider-bidule", release_date: "2012-12-12" } */
+
+    const { append, remove } = useFieldArray({
+        name: 'actors',
+        control,
+    });
+
+    const renderNextButton = () => {
+        return (
+            <button
+                disabled={!isValid}
+                type="submit"
+            >
+                Valider
+            </button>
+        );
+    };
 
     // FORM FUNCTIONS
 
     // submit
-    const onSubmit = (e, formDataTypes) => {
-        e.preventDefault();
-        console.log(formDataTypes);
-        /* props.onValidation(data); */
+    const onSubmit = (data) => {
+        console.log('Le formulaire a été validé avec succès !', data);
+        props.onValidation(data);
         /* completeFormStep() */
         /* navigate("/"); */
     }
@@ -176,41 +194,44 @@ const Form = (props) => {
                 <fieldset>
                     <label htmlFor="actors">
                         <span>Acteur·ice·s</span>
-                            <ul>
-                            {["Zoe Saldana", "Zendaya", "Timothée Chalamet"].map((actors, index) => {
-                              return (
-                                <li key={actors.id}>
-                                    <label htmlFor={`actors.${index}.photo`}>Photo</label>
-                                    <input
-                                        type="url"
-                                        name={`actors.${index}.photo`}
-                                        placeholder="https://example.com"
-                                        pattern="https://.*"
-                                        id={`${index}`}
-                                        {...register(`actors.${index}.photo`)}
-                                    />
+                        <ul>
+                            {[].map((actors, index) => {
+                                return (
+                                    <li key={actors.id}>
+                                        <span>Photo</span>
+                                        <input
+                                            type="url"
+                                            placeholder="https://example.com"
+                                            pattern="https://.*"
+                                            id={`${index}`}
+                                            {...register(`actors.${index}.photo`)}
+                                        />
 
-                                    <label htmlFor={`actors.${index}.name`}>Acteur·ice</label>
-                                    <input
-                                        type="text"
-                                        name={`actors.${index}.name`}
-                                        id={`${index}`}
-                                        {...register(`actors.${index}.name`)} />
+                                        <span>Acteur·ice</span>
+                                        <input
+                                            type="text"
+                                            id={`${index}`}
+                                            {...register(`actors.${index}.name`)} />
 
-                                    <label htmlFor={`actors.${index}.character`}>Rôle</label>
-                                    <input
-                                        type="text"
-                                        name={`actors.${index}.character`}
-                                        id={`${index}`}
-                                        {...register(`actors.${index}.character`)}
-                                    />
-                                </li>
-                              );
+                                        <span>Rôle</span>
+                                        <input
+                                            type="text"
+                                            id={`${index}`}
+                                            {...register(`actors.${index}.character`)}
+                                        />
+                                        <button type="button" onClick={() => remove(index)}>
+                                            Delete
+                                        </button>
+                                    </li>
+                                );
                             })}
-                          </ul>
-                        <div>
-
-                        </div>
+                        </ul>
+                        <button
+                            type="button"
+                            onClick={() => append({ photo: "", name: "", character: "" })}
+                        >
+                            append
+                        </button>
 
                     </label>
                     {/* <button onClick={handleAddNewActor}>Ajouter un acteur</button> */}
@@ -230,6 +251,10 @@ const Form = (props) => {
                     {/* <button onClick={handleAddNewSimilarMovie}>Ajouter un acteur</button> */}
                     {errors.similar && <p className="form__error-message">Veuillez sélectionner un ou plusieurs films.</p>}
                 </fieldset>
+
+                {/* final button */}
+                {renderNextButton()}
+
                 <pre>
                     {JSON.stringify(watch(), null, 2)}
                 </pre>
