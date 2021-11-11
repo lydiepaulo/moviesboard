@@ -14,7 +14,7 @@ const Form = (props) => {
     // check changes of the checkbox
     const [formStep, setFormStep] = useState(0);
     const defaultValues = props.movie;
-    const [checked, setChecked] = React.useState(true);
+    const [checked, setChecked] = useState(true);
     const [actors, setActors] = useState([
         {
             poster: 'https://cdn.citatis.com/img/a/8/2152.v5.jpg',
@@ -105,7 +105,7 @@ const Form = (props) => {
     const onSubmit = (data) => {
         console.log('Le formulaire a été validé avec succès !', data);
         props.onValidation(data);
-        /* completeFormStep() */
+        completeFormStep()
         /* navigate("/"); */
     }
 

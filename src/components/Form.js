@@ -1,13 +1,31 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useFieldArray, useForm } from "react-hook-form";
-import { GrPrevious } from "react-icons/gr";
+import { GrAddCircle, GrHome, GrPrevious } from "react-icons/gr";
+import MoviesService from '../services/MoviesService';
 
 const MAX_STEPS = 2;
 
 const Form = (props) => {
-    // FORM VARIABLES & CONFIGURATION
+    // FORM VARIABLES
     const [formStep, setFormStep] = useState(0);
     const [checked, setChecked] = useState(true);
+    const [TMDBData, setTMDBData] = useState(null);
+    const searchRef = useRef('');
+
+    
+
+    const onKeyDown = () => {
+        if (searchRef.current.value !== '') {
+            MoviesService.fetchMovieData(undefined, searchRef.current.value)
+            .then((apiResult) => {
+                setTMDBData(apiResult.results);
+            });
+        }
+    }
+
+    console.log(TMDBData);
+
+    // FORM CONFIGURATION
 
     const {
         watch,
@@ -31,19 +49,18 @@ const Form = (props) => {
     /* actors : { photo: "https://static1.ozap.com/articles/9/44/03/59/@/4441736-vanessa-paradis-128x128-1.jpg", name: "vanessa paradis", character: "joe le taxi" },{ photo: "https://static1.ozap.com/articles/9/44/03/59/@/4441736-vanessa-paradis-128x128-1.jpg", name: "vanessa paradis", character: "joe le taxi" } */
     /* similar : movies { poster: "https://m.media-amazon.com/images/I/510fWlbNvNL._AC_.jpg", title: "spider-bidule", release_date: "2012-12-12" } */
 
-    // actors
-    const { append, remove } = useFieldArray({
+    // control : add and remove new fields from the server
+    const controlActors = useFieldArray({
         name: 'actors',
         control,
     });
 
-    // similar movies
-
-
-
+    const controlSimilarMovies = useFieldArray({
+        name: 'similar_movies',
+        control,
+    });
 
     // FORM STEPS
-
     const previousFormStep = () => {
         setFormStep((cur) => cur - 1);
     };
@@ -52,8 +69,11 @@ const Form = (props) => {
         setFormStep((cur) => cur + 1);
     };
 
-    // FORM BUTTONS
+    const backToFirstFormStep = () => {
+        window.location.reload();
+    };
 
+    // FORM BUTTONS
     // prev
     const renderPrevButton = () => {
         if (formStep === 1) {
@@ -96,12 +116,23 @@ const Form = (props) => {
         }
     };
 
-    // FORM FUNCTIONS
+    // add a new movie
+    const newMovieButton = () => {
+        return (
+            <button
+                onClick={backToFirstFormStep}
+                type="button"
+            >
+                <GrAddCircle /> Ajouter un film
+            </button>
+        )
+    }
 
+    // FORM FUNCTIONS
     // submit
     const onSubmit = (data) => {
         props.onValidation(data);
-        completeFormStep() 
+        completeFormStep()
     }
 
     return (
@@ -133,13 +164,17 @@ const Form = (props) => {
                                         message: "Veuillez préciser un titre."
                                     },
                                 })}
+                                onKeyDown={onKeyDown}
+                                ref={searchRef}
                             />
+
                             <datalist id="title-id">
-                                {['Spider-man', 'Spider-cochon', 'il sait marcher au plafond'].map((item, key) =>
-                                    <option key={key} value={item} />
-                                )}
+                                        {TMDBData &&
+                                            TMDBData.map((item, key) =>
+                                            <option key={key} value={item.title} />
+                                        )}
                             </datalist>
-                            {errors.title && <p className="form__error-message">{errors.title.message}</p>}
+                            {errors.title?.type === "required" && <p className="form__error-message">{errors.title.message}</p>}
                         </fieldset>
 
                         {/* release date */}
@@ -149,15 +184,20 @@ const Form = (props) => {
                                 type="text"
                                 id="date"
                                 name="date"
-                                placeholder="2012-12-12"
+                                placeholder="12-12-2021"
                                 {...register("release_date", {
                                     required: {
                                         value: "Required",
                                         message: "Veuillez préciser une date."
                                     },
+                                    pattern: {
+                                        value: /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)\d{2})$/i,
+                                        message: "Veuillez respecter le format : JJ-MM-AAAA."
+                                    }
                                 })}
                             />
-                            {errors.date && <p className="form__error-message">{errors.date.message}</p>}
+                            {errors.release_date?.type === "required" && <p className="form__error-message">{errors.release_date.message}</p>}
+                            {errors.release_date?.type === "pattern" && <p className="form__error-message">{errors.release_date.message}</p>}
                         </fieldset>
                     </section>
                 )}
@@ -185,7 +225,7 @@ const Form = (props) => {
                                 ))}
                             </label>
                             {/* <button onClick={handleAddNewCategorie}>Ajouter une catégorie</button> */}
-                            {errors.categories && <p className="form__error-message">Veuillez sélectionner une ou plusieurs catégories.</p>}
+                            {errors.categories?.type === "required" && <p className="form__error-message">Veuillez sélectionner une ou plusieurs catégories.</p>}
                         </fieldset>
 
                         {/* description */}
@@ -198,10 +238,11 @@ const Form = (props) => {
                                 {...register("description", {
                                     required: {
                                         value: "Required",
-                                        message: "Veuillez préciser une date."
+                                        message: "Veuillez ajouter une description."
                                     }
                                 })}
                             />
+                            {errors.description?.type === "required" && <p className="form__error-message">{errors.description.message}</p>}
                         </fieldset>
 
                         {/* poster */}
@@ -260,7 +301,7 @@ const Form = (props) => {
                                                     id={`${index}`}
                                                     {...register(`actors.${index}.character`)}
                                                 />
-                                                <button type="button" onClick={() => remove(index)}>
+                                                <button type="button" onClick={() => controlActors.remove(index)}>
                                                     Delete
                                                 </button>
                                             </li>
@@ -269,7 +310,7 @@ const Form = (props) => {
                                 </ul>
                                 <button
                                     type="button"
-                                    onClick={() => append({ photo: "", name: "", character: "" })}
+                                    onClick={() => controlActors.append({ photo: "", name: "", character: "" })}
                                 >
                                     append
                                 </button>
@@ -282,15 +323,50 @@ const Form = (props) => {
                         {/* similar movies */}
                         <fieldset>
                             <label htmlFor="similar">
-                                <span>Films similaires</span>
-                                <input
-                                    type="text"
-                                    name="similar"
-                                    id="similar"
-                                />
+                                <span>Films du même genre</span>
+                                <ul>
+                                    {[].map((movies, index) => {
+                                        return (
+                                            <li key={movies.id}>
+                                                <span>Poster</span>
+                                                <input
+                                                    type="url"
+                                                    placeholder="https://example.com"
+                                                    pattern="https://.*"
+                                                    id={`${index}`}
+                                                    {...register(`movies.${index}.poster`)}
+                                                />
+
+                                                <span>Titre</span>
+                                                <input
+                                                    type="text"
+                                                    id={`${index}`}
+                                                    {...register(`movies.${index}.title`)} />
+
+                                                <span>Date de sortie</span>
+                                                <input
+                                                    type="text"
+                                                    id={`${index}`}
+                                                    placeholder="2012-12-12"
+                                                    {...register(`movies.${index}.release_date`)}
+                                                />
+                                                <button type="button" onClick={() => controlSimilarMovies.remove(index)}>
+                                                    Delete
+                                                </button>
+                                            </li>
+                                        );
+                                    })}
+                                </ul>
+                                <button
+                                    type="button"
+                                    onClick={() => controlSimilarMovies.append({ poster: "", title: "", release_date: "" })}
+                                >
+                                    append
+                                </button>
+
                             </label>
-                            {/* <button onClick={handleAddNewSimilarMovie}>Ajouter un acteur</button> */}
-                            {errors.similar && <p className="form__error-message">Veuillez sélectionner un ou plusieurs films.</p>}
+                            {/* <button onClick={handleAddNewActor}>Ajouter un acteur</button> */}
+                            {errors.actors && <p className="form__error-message">Veuillez sélectionner un·e ou plusieurs acteur·ice·s.</p>}
                         </fieldset>
                     </section>
                 )}
@@ -300,6 +376,10 @@ const Form = (props) => {
                     <section>
                         <h2>Bien joué !</h2>
                         <p>Le film a été ajouté avec succès.</p>
+                        {newMovieButton()}
+                        <button>
+                            <GrHome /> Retourner à l'accueil
+                        </button>
                     </section>
                 )}
 

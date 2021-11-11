@@ -61,11 +61,11 @@ const MoviesService = {
     },
 
     // THE MOVIE DATABASE
-    async fetchMovieData(id, value) {
-        let url = `${TMDB_CALL}&query=${value}`;
+    async fetchMovieData(id, searchValue) {
+        let url = `${TMDB_CALL}&query=${searchValue}`;
 
         if (id) {
-            url += `${TMDB_CALL}/${id}-${value}`;
+            url += `${TMDB_CALL}/${id}-${searchValue}`;
         }
 
         try {
