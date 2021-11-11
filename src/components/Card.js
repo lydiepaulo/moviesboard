@@ -1,7 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import GlobalFunctions from '../services/GlobalFunctions';
 
 const Card = ({ data }) => {
+    const movieDate = data.release_date;
+
     return (
         <figure className="card smooth-apparition">
             <Link to={{ pathname: `/movies/${data.id}` }}>
@@ -14,7 +17,7 @@ const Card = ({ data }) => {
                 <div>
                     <span>
                         {/* <LikeButton id={id} /> */}
-                        {data.release_date}
+                        {GlobalFunctions.formatDate(movieDate)}
                     </span>
                     <p className="card-description">
                         {data.description}

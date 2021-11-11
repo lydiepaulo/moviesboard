@@ -4,6 +4,7 @@ const API_CALL = 'http://localhost:3000';
 const TMDB_CALL = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.REACT_APP_TMDB_API_KEY}`;
 
 const MoviesService = {
+    // PRIVATE API
     async fetchMovies(id, filter, value) {
         let url = `${API_CALL}/movies`;
 
@@ -25,11 +26,46 @@ const MoviesService = {
         }
     },
 
-    async fetchMovieData(id) {
-        let url = `${TMDB_CALL}&query=Venom`;
+    // add a movie
+    add(movie) {
+        return axios
+            .post(`${API_CALL}/movies`, movie)
+            .then((response) => response.data)
+            .catch(errorHandler);
+    },
+
+    // delete via ID
+    remove(movieId) {
+        return axios
+            .delete(`${API_CALL}/movies/${movieId}`)
+            .then((response) => response.data)
+            .catch(errorHandler);
+    },
+
+    // edit a movie
+    update(movie) {
+        return axios
+            .put(`${API_CALL}/movies/${movie.id}`, {
+                gender: movie.gender,
+                firstname: movie.firstname,
+                lastname: movie.lastname,
+                email: movie.email,
+                phone: movie.phone,
+                birthdate: movie.birthdate,
+                city: movie.city,
+                country: movie.country,
+                photo: movie.photo,
+            })
+            .then((response) => response.data)
+            .catch(errorHandler);
+    },
+
+    // THE MOVIE DATABASE
+    async fetchMovieData(id, value) {
+        let url = `${TMDB_CALL}&query=${value}`;
 
         if (id) {
-            url += `${TMDB_CALL}/${id}-venom`;
+            url += `${TMDB_CALL}/${id}-${value}`;
         }
 
         try {

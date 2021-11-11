@@ -1,7 +1,13 @@
 const GlobalFunctions = {
 
-    formatDate(string) {
-        const dateAndHour = new Date(string).toLocaleString('fr-FR').slice(0, -3).replace(/:/g, "h");
+    formatDate(str){
+        const options = {
+            year: "numeric",
+            month:"long",
+            day:"numeric"
+        };
+        const dateAndHour = new Date(str).toLocaleString('fr-FR', options);
+
         return dateAndHour;
     },
 

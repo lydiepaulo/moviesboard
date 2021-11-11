@@ -1,7 +1,7 @@
 .pages-background {
     min-height: 100vh;
     overflow-x: hidden;
-    background-color: $base-1;
+    background-image: linear-gradient(45deg, $base-1, $base-light);
 }
 
 main {
