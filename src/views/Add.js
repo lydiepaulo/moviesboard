@@ -10,7 +10,10 @@ const Add = () => {
     function addMovie(data) {
         // Envoyer "data" vers le serveur POST /movies
         MoviesService.add(data)
-            .catch((err) => setErrorMessage(err.message));
+        .then((response) => { 
+            console.log(response, "coucou ?")
+        })
+        .catch((err) => setErrorMessage(err.message));
     }
 
     return (

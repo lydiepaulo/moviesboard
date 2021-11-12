@@ -5,7 +5,7 @@ import MoviesService from '../services/MoviesService';
 const Home = () => {
     // Data
     const [movieData, setMovieData] = useState(null);
-    const [moreData, setMoreData] = useState(null);
+    const [moreData, setMoreData] = useState(null)
     const inputRef = useRef();
 
     useEffect(() => {
@@ -25,13 +25,14 @@ const Home = () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    console.log(moreData);
     
     function changeSearchValue() {
         setMoreData(inputRef.current.value);
     }
 
+    console.log('====================================');
+    console.log(moreData);
+    console.log('====================================');
     /* Add button */
     
 

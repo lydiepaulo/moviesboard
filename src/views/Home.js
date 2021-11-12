@@ -15,7 +15,6 @@ const Home = () => {
             .then((myApiResult) => {
                 if (myApiResult !== "") {
                     setMyMovies(myApiResult);
-                    console.log(myApiResult);
                 }
             })
             .catch((err) => setErrorMessage('Erreur serveur : Impossible de récupérer les films de la bibliothèque…'));

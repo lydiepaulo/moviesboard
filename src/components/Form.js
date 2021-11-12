@@ -3,7 +3,7 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { GrAddCircle, GrHome, GrPrevious } from "react-icons/gr";
 import MoviesService from '../services/MoviesService';
 
-const MAX_STEPS = 2;
+const MAX_STEPS = 5;
 
 const Form = (props) => {
     // FORM VARIABLES
@@ -12,10 +12,11 @@ const Form = (props) => {
     const [TmdbSearchedMovie, setTmdbSearchedMovie] = useState(null);
     const [TmdbSearchId, setTmdbSearchId] = useState(null);
     const [TmdbMovie, setTmdbMovie] = useState(null);
+    const [TmdbActors, setTmdbActors] = useState(null);
+    const [TmdbSimilarMovies, setTmdbSimilarMovies] = useState(null);
 
     // FORM CONFIGURATION
     const {
-        watch,
         control,
         setValue,
         register,
@@ -34,22 +35,18 @@ const Form = (props) => {
             similar_movies: []
         }
     });
-    /* actors : { photo: "https://static1.ozap.com/articles/9/44/03/59/@/4441736-vanessa-paradis-128x128-1.jpg", name: "vanessa paradis", character: "joe le taxi" },{ photo: "https://static1.ozap.com/articles/9/44/03/59/@/4441736-vanessa-paradis-128x128-1.jpg", name: "vanessa paradis", character: "joe le taxi" } */
-    /* similar : movies { poster: "https://m.media-amazon.com/images/I/510fWlbNvNL._AC_.jpg", title: "spider-bidule", release_date: "2012-12-12" } */
-
 
     // DATA FROM TMDB
 
     // get the title
     const onInput = (e) => {
-        //let searchValue = searchRef.current.value;
         let searchValue = e.target.value;
 
         if (searchValue !== '') {
             MoviesService.fetchMovieData(undefined, searchValue)
                 .then((apiResult) => {
                     setTmdbSearchedMovie(apiResult.results);
-            });
+                });
         }
     }
 
@@ -59,45 +56,92 @@ const Form = (props) => {
     }
 
     useEffect(() => {
-       if (TmdbSearchId) {
-        MoviesService.fetchMovieData(TmdbSearchId)
-        .then((apiResult) => {
-            setTmdbMovie(apiResult);
-            setValue("title", apiResult.title, {
-                shouldValidate: true,
-                shouldDirty: true
-            });
+        if (TmdbSearchId) {
+            MoviesService.fetchMovieData(TmdbSearchId)
+                .then((apiResult) => {
+                    setTmdbMovie(apiResult);
+                    setValue("title", apiResult.title, {
+                        shouldValidate: true,
+                        shouldDirty: true
+                    });
 
-            setValue("release_date", apiResult.release_date, {
-                shouldValidate: true,
-                shouldDirty: true
-            });
+                    setValue("release_date", apiResult.release_date, {
+                        shouldValidate: true,
+                        shouldDirty: true
+                    });
 
-            setValue("description", apiResult.overview, {
-                shouldValidate: true,
-                shouldDirty: true
-            });
-            
-            if (apiResult.poster_path) {
-                let poster_url = `https://image.tmdb.org/t/p/original${apiResult.poster_path}`;
-                setValue("poster", poster_url, {
-                    shouldValidate: true,
-                    shouldDirty: true
+                    setValue("description", apiResult.overview, {
+                        shouldValidate: true,
+                        shouldDirty: true
+                    });
+
+                    if (apiResult.poster_path) {
+                        let poster_url = `https://image.tmdb.org/t/p/original${apiResult.poster_path}`;
+                        setValue("poster", poster_url, {
+                            shouldValidate: true,
+                            shouldDirty: true
+                        });
+                    }
+
+                    if (apiResult.backdrop_path) {
+                        let backdrop_url = `https://image.tmdb.org/t/p/original${apiResult.backdrop_path}`;
+                        setValue("backdrop", backdrop_url, {
+                            shouldValidate: true,
+                            shouldDirty: true
+                        });
+                    }
                 });
-            }
-            
-            if (apiResult.backdrop_path) {
-                let backdrop_url = `https://image.tmdb.org/t/p/original${apiResult.backdrop_path}`;
-                setValue("backdrop", backdrop_url, {
-                    shouldValidate: true,
-                    shouldDirty: true
+
+            MoviesService.fetchMoreData(TmdbSearchId, "casts")
+                .then((apiResult) => {
+                    setTmdbActors(apiResult.cast);
+
+                    for (let i = 0; i < apiResult.cast.length; i++) {
+                        let profile = `https://image.tmdb.org/t/p/original${apiResult.cast[i].profile_path}`;
+                        setValue(`actors.${i}.photo`, profile, {
+                            shouldValidate: true,
+                            shouldDirty: true
+                        });
+
+                        setValue(`actors.${i}.name`, apiResult.cast[i].character, {
+                            shouldValidate: true,
+                            shouldDirty: true
+                        });
+                        
+                        setValue(`actors.${i}.character`, apiResult.cast[i].character, {
+                            shouldValidate: true,
+                            shouldDirty: true
+                        });
+                    }
+
+                })
+                    
+            MoviesService.fetchMoreData(TmdbSearchId, "similar")
+                .then((apiResult) => {
+                    setTmdbSimilarMovies(apiResult.results);
+
+                    for (let i = 0; i < apiResult.results.length; i++) {
+                        let poster = `https://image.tmdb.org/t/p/original${apiResult.results[i].backdrop_path}`;
+                        setValue(`similar_movies.${i}.poster`, poster, {
+                            shouldValidate: true,
+                            shouldDirty: true
+                        });
+
+                        setValue(`similar_movies.${i}.title`, apiResult.results[i].title, {
+                            shouldValidate: true,
+                            shouldDirty: true
+                        });
+                        
+                        setValue(`similar_movies.${i}.release_date`, apiResult.results[i].release_date, {
+                            shouldValidate: true,
+                            shouldDirty: true
+                        });
+                    }
                 });
-            }
-        });
-       }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [TmdbSearchId, setValue]);
 
-    
     // control : add and remove new fields from the server
     const controlActors = useFieldArray({
         name: 'actors',
@@ -179,14 +223,24 @@ const Form = (props) => {
 
     // FORM FUNCTIONS
     // submit
-    const onSubmit = (data) => {
+    /* const onSubmit = (e, data) => {
+        e.preventDefault();
+        completeFormStep();
         props.onValidation(data);
-        completeFormStep()
+    } */
+
+    function onSubmit(e, data) {
+        console.log('====================================');
+        console.log(data);
+        console.log('====================================');
+        e.preventDefault();
+        completeFormStep();
+        props.onValidation(data);
     }
 
     return (
         <div>
-            <form onSubmit={handleSubmit(onSubmit)} className="form">
+            <form onSubmit={handleSubmit(onSubmit)} action="#" className="form">
                 {formStep < MAX_STEPS && (
                     <div>
                         {renderPrevButton()}
@@ -204,6 +258,7 @@ const Form = (props) => {
                         <fieldset>
                             <label htmlFor="title">Titre</label>
                             <input
+                                key="title-id"
                                 type="text"
                                 id="title"
                                 name="title"
@@ -214,10 +269,9 @@ const Form = (props) => {
 
                             {TmdbSearchedMovie && TmdbSearchedMovie.length !== 0 && (
                                 <ul>
-                                    {TmdbSearchedMovie.map((movie, key) =>
-                                        <li key={key.id} id={movie.id} onClick={onClickUl}>
+                                    {TmdbSearchedMovie.map((movie, id) =>
+                                        <li key={id} id={movie.id} onClick={onClickUl}>
                                             {movie.title}
-                                            <span>{movie.release_date.split('-')[0]}</span>
                                         </li>
                                     )}
                                 </ul>
@@ -228,18 +282,18 @@ const Form = (props) => {
                         {/* release date */}
                         <fieldset>
                             <label htmlFor="date">Date de sortie</label>
-                                <input
-                                    type="text"
-                                    id="date"
-                                    name="date"
-                                    placeholder="12-12-2021"
-                                    {...register("release_date", {
-                                        pattern: {
-                                            value: /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)\d{2})$/i,
-                                            message: "Veuillez respecter le format : JJ-MM-AAAA."
-                                        }
-                                    })}
-                                />
+                            <input
+                                type="text"
+                                id="date"
+                                name="date"
+                                placeholder="12-12-2021"
+                                {...register("release_date", {
+                                    pattern: {
+                                        value: /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)\d{2})$/i,
+                                        message: "Veuillez respecter le format : JJ-MM-AAAA."
+                                    }
+                                })}
+                            />
                         </fieldset>
                     </section>
                 )}
@@ -252,10 +306,11 @@ const Form = (props) => {
                         <fieldset>
                             <label htmlFor="categories">
                                 <span>Catégories</span>
-                                {TmdbMovie && 
+                                {TmdbMovie &&
                                     TmdbMovie.genres.map((genre) => (
-                                        <label key={genre.ids}>
+                                        <label>
                                             <input
+                                                key={genre.id}
                                                 name="categories"
                                                 type="checkbox"
                                                 value={genre.name}
@@ -319,9 +374,9 @@ const Form = (props) => {
                         <fieldset>
                             <label htmlFor="actors">
                                 <span>Acteur·ice·s</span>
-                                <ul>
-                                    {[].map((actors, index) => {
-                                        return (
+                                {TmdbActors && TmdbActors.length !== 0 && (
+                                    <ul>
+                                        {TmdbActors.map((actors, index) =>
                                             <li key={actors.id}>
                                                 <span>Photo</span>
                                                 <input
@@ -348,9 +403,9 @@ const Form = (props) => {
                                                     Delete
                                                 </button>
                                             </li>
-                                        );
-                                    })}
-                                </ul>
+                                        )}
+                                    </ul>
+                                )}
                                 <button
                                     type="button"
                                     onClick={() => controlActors.append({ photo: "", name: "", character: "" })}
@@ -367,9 +422,9 @@ const Form = (props) => {
                         <fieldset>
                             <label htmlFor="similar">
                                 <span>Films du même genre</span>
-                                <ul>
-                                    {[].map((movies, index) => {
-                                        return (
+                                {TmdbSimilarMovies && TmdbSimilarMovies.length !== 0 && (
+                                    <ul>
+                                        {TmdbSimilarMovies.map((movies, index) =>
                                             <li key={movies.id}>
                                                 <span>Poster</span>
                                                 <input
@@ -377,29 +432,29 @@ const Form = (props) => {
                                                     placeholder="https://example.com"
                                                     pattern="https://.*"
                                                     id={`${index}`}
-                                                    {...register(`movies.${index}.poster`)}
+                                                    {...register(`similar_movies.${index}.poster`)}
                                                 />
 
                                                 <span>Titre</span>
                                                 <input
                                                     type="text"
                                                     id={`${index}`}
-                                                    {...register(`movies.${index}.title`)} />
+                                                    {...register(`similar_movies.${index}.title`)} />
 
                                                 <span>Date de sortie</span>
                                                 <input
                                                     type="text"
                                                     id={`${index}`}
                                                     placeholder="2012-12-12"
-                                                    {...register(`movies.${index}.release_date`)}
+                                                    {...register(`similar_movies.${index}.release_date`)}
                                                 />
                                                 <button type="button" onClick={() => controlSimilarMovies.remove(index)}>
                                                     Delete
                                                 </button>
                                             </li>
-                                        );
-                                    })}
-                                </ul>
+                                        )}
+                                    </ul>
+                                )}
                                 <button
                                     type="button"
                                     onClick={() => controlSimilarMovies.append({ poster: "", title: "", release_date: "" })}
@@ -428,10 +483,9 @@ const Form = (props) => {
 
                 {/* final button */}
                 {renderNextButton()}
-
-                <pre>
-                    {JSON.stringify(watch(), null, 2)}
-                </pre>
+                {/*     <pre>
+                            {JSON.stringify(watch(), null, 2)}
+                        </pre> */}
             </form>
         </div>
     );
