@@ -14,10 +14,13 @@ const Add = () => {
     }
 
     return (
-        <div>
+        <div className="pages-background">
             <Navbar />
 
-            <h1 className="title-large">Ajouter un film à la bibliothèque</h1>
+            <h1 className="title-large">
+                <span>Ajouter</span>
+                <span>un film </span>
+            </h1>
             
             {errorMessage && <div className='error'>{errorMessage}</div>}
             <Form onValidation={addMovie} />

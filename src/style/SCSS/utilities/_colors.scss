@@ -1,6 +1,5 @@
-$base-1: #dbd4dd;
-$base-dark: #cfc2db;
-$base-2: #f9eef2;
-$base-light: lighten($base-2, 70%);
-$primary: #9186AF;
-$secondary: #dcb75b;
+$primary-light: #e8e9ee;
+$primary-dark: #b1b0c6;
+
+$white: lighten($primary-light, 2%);
+$black: #222222;

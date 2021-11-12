@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import GlobalFunctions from '../services/GlobalFunctions';
+import DeleteButton from './DeleteButton';
 
 const Card = ({ data }) => {
     const movieDate = data.release_date;
@@ -17,11 +18,12 @@ const Card = ({ data }) => {
                 <div>
                     <span>
                         {/* <LikeButton id={id} /> */}
-                        {GlobalFunctions.formatDate(movieDate)}
+                        <span className="title-small date">{GlobalFunctions.formatDate(movieDate)}</span>
                     </span>
                     <p className="card-description">
                         {data.description}
                     </p>
+                    <DeleteButton />
                 </div>
             </figcaption>
         </figure>

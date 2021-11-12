@@ -1,6 +1,44 @@
+$Hashira: 'hashira_mtregular', sans-serif;
+$Mulish: "Mulish", sans-serif;
+
+// mixin
+@mixin Hashira($weight) {
+    font-family: $Hashira;
+    font-weight: $weight;
+}
+
+@mixin Mulish($weight) {
+    font-family: $Mulish;
+    font-weight: $weight;
+}
+
+@mixin Size-LH($size, $lineHeight) {
+    font-size: $size;
+    line-height: $lineHeight;
+}
+
+// use
 .title {
     &-large {
-        color: green
+        text-align: right;
+        @include Hashira(400);
+        margin: -25px 0 60px;
+        
+        @include media-min($tablet) {
+            @include Size-LH(8rem, 75%);
+        }
+
+        @include media-max($tablet) {
+            @include Size-LH(4rem, 75%);
+        }
+
+        span {
+            display: block;
+            &:last-child {
+                text-transform: uppercase;
+                font-style: italic;
+            }
+        }
     }
 
     &-medium {
@@ -8,6 +46,9 @@
     }
 
     &-small {
-        color: pink;
+        @include Mulish(600);
+        @include Size-LH(.54rem, 230%);
+        text-transform: uppercase;
+        letter-spacing: 2px;
     }
 }

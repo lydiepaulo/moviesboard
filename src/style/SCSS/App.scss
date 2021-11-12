@@ -1,17 +1,18 @@
 //fonts
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@300;400&display=swap');
+@import "./hashira-font/hashira";
 
 //utilities
 @import "./utilities/breakpoints";
 @import "./utilities/reset";
 @import "./utilities/colors";
 @import "./utilities/fonts";
+@import "./utilities/mixin";
 
 //components
 @import "./components/card";
 @import "./components/form";
 @import "./components/locomotive-scroll";
-@import "./components/navbar";
 
 //pages
 @import "./pages/global";

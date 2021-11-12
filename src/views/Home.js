@@ -61,7 +61,10 @@ const Home = () => {
         <div className="pages-background">
             <Navbar />
             <main className="home-main">
-                <h1 className="title-large">My movies board</h1>
+                <h1 className="title-large">
+                    <span>My movies</span>
+                    <span>board</span>
+                </h1>
 
                 {/* DEMANDER À THIERRY : BALISES FORM ???? */}
                 <span className="home__search-bar">

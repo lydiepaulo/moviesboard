@@ -1,0 +1,57 @@
+@use 'colors' as *;
+
+//FLEXBOX
+@mixin flexDirJustAlign($direction, $justify, $align) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+@mixin flexDirJust($direction, $justify) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+}
+@mixin flexDirAlign($direction, $align) {
+  display: flex;
+  flex-direction: $direction;
+  align-items: $align;
+}
+
+@mixin flexDir($direction) {
+  display: flex;
+  flex-direction: $direction;
+}
+
+@mixin flexJustAlign($justify, $align) {
+  display: flex;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+@mixin flexJust($justify) {
+  display: flex;
+  justify-content: $justify;
+}
+
+@mixin flexAlign($align) {
+  display: flex;
+  align-items: $align;
+}
+
+@mixin flexWrap {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+// OVERFLOW
+@mixin overflowEllipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin paddingRatio($paddingLeftRight, $ratio: 2/3) {
+  padding: #{$paddingLeftRight * $ratio} $paddingLeftRight;
+}

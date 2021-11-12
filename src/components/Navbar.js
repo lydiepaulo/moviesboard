@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { GrAddCircle, GrHome } from 'react-icons/gr';
+import { GrHome, GrFormSearch } from 'react-icons/gr';
 import { NavLink } from 'react-router-dom';
 import GlobalFunctions from '../services/GlobalFunctions';
 /* import favicon from '../assets/favicon.png' */
@@ -14,12 +14,12 @@ const Navbar = () => {
             <ul className="nav-bar">
                 <li className="nav-bar__home">
                     <NavLink exact="true" to="/" className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}>
-                        <GrHome /> Accueil
+                        <GrHome />
                     </NavLink>
                 </li>
                 <li>
                     <NavLink exact="true" to="/add" className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}>
-                        <GrAddCircle /> Ajouter un film
+                        <GrFormSearch />
                     </NavLink>
                 </li>
             </ul>

@@ -9,24 +9,35 @@ const Form = (props) => {
     // FORM VARIABLES
     const [formStep, setFormStep] = useState(0);
     const [checked, setChecked] = useState(true);
-    const [TMDBData, setTMDBData] = useState(null);
+    const [TmdbMovie, setTmdbMovie] = useState(null);
+    const [TmdbId, setTmdbId] = useState(null);
+    const [myMovie, setMyMovie] = useState(null);
     const searchRef = useRef('');
 
-    
+    // DATA FROM TMDB
 
-    const onKeyDown = () => {
+    // get the title
+    const onInput = () => {
         if (searchRef.current.value !== '') {
             MoviesService.fetchMovieData(undefined, searchRef.current.value)
-            .then((apiResult) => {
-                setTMDBData(apiResult.results);
+                .then((apiResult) => {
+                    setTmdbMovie(apiResult.results);
             });
         }
     }
 
-    console.log(TMDBData);
+    const onClickUl = (e) => {
+        setTmdbMovie(null);
+        setTmdbId(e.target.id);
+        console.log(e.target.id, TmdbId);
+        MoviesService.fetchMovieData(TmdbId)
+            .then((apiResult) => {
+                setMyMovie(apiResult.results[0]);
+                console.log(apiResult.results[0]);
+            });
+    }
 
     // FORM CONFIGURATION
-
     const {
         watch,
         control,
@@ -155,30 +166,35 @@ const Form = (props) => {
                         <fieldset>
                             <label htmlFor="title">Titre</label>
                             <input
-                                list="title-id"
+                                type="text"
                                 id="title"
                                 name="title"
+                                placeholder="Titre"
                                 {...register("title", {
                                     required: {
                                         value: "Required",
                                         message: "Veuillez préciser un titre."
                                     },
                                 })}
-                                onKeyDown={onKeyDown}
+                                onInput={onInput}
                                 ref={searchRef}
                             />
 
-                            <datalist id="title-id">
-                                        {TMDBData &&
-                                            TMDBData.map((item, key) =>
-                                            <option key={key} value={item.title} />
-                                        )}
-                            </datalist>
+                            {TmdbMovie && TmdbMovie.length !== 0 && (
+                                <ul>
+                                    {TmdbMovie.map((movie, key) =>
+                                        <li key={key} id={movie.id} onClick={onClickUl}>
+                                            {movie.title}
+                                            <span>{movie.release_date.split('-')[0]}</span>
+                                        </li>
+                                    )}
+                                </ul>
+                            )}
                             {errors.title?.type === "required" && <p className="form__error-message">{errors.title.message}</p>}
                         </fieldset>
 
                         {/* release date */}
-                        <fieldset>
+                        {/* <fieldset>
                             <label htmlFor="date">Date de sortie</label>
                             <input
                                 type="text"
@@ -198,7 +214,7 @@ const Form = (props) => {
                             />
                             {errors.release_date?.type === "required" && <p className="form__error-message">{errors.release_date.message}</p>}
                             {errors.release_date?.type === "pattern" && <p className="form__error-message">{errors.release_date.message}</p>}
-                        </fieldset>
+                        </fieldset> */}
                     </section>
                 )}
 
@@ -210,19 +226,20 @@ const Form = (props) => {
                         <fieldset>
                             <label htmlFor="categories">
                                 <span>Catégories</span>
-                                {["action", "science-fiction"].map((genre) => (
-                                    <label key={genre.id}>
-                                        <input
-                                            name="categories"
-                                            type="checkbox"
-                                            value={genre}
-                                            defaultChecked={checked}
-                                            onChange={() => setChecked(!checked)}
-                                            {...register("categories")}
-                                        />
-                                        {genre}
-                                    </label>
-                                ))}
+                                {/* {TmdbMovie &&
+                                    TmdbMovie.map((genre) => (
+                                        <label key={genre.ids}>
+                                            <input
+                                                name="categories"
+                                                type="checkbox"
+                                                value={genre}
+                                                defaultChecked={checked}
+                                                onChange={() => setChecked(!checked)}
+                                                {...register("categories")}
+                                            />
+                                            {genre}
+                                        </label>
+                                    ))} */}
                             </label>
                             {/* <button onClick={handleAddNewCategorie}>Ajouter une catégorie</button> */}
                             {errors.categories?.type === "required" && <p className="form__error-message">Veuillez sélectionner une ou plusieurs catégories.</p>}

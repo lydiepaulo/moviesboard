@@ -36,7 +36,7 @@ const Home = () => {
     
 
     return (
-        <div>
+        <div className="pages-background">
             <Navbar />
 
             {movieData &&

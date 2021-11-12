@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const API_CALL = 'http://localhost:3000';
-const TMDB_CALL = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.REACT_APP_TMDB_API_KEY}`;
+const TMDB_CALL = `https://api.themoviedb.org/3/`;
+const API_KEY = `api_key=${process.env.REACT_APP_TMDB_API_KEY}`;
 
 const MoviesService = {
     // PRIVATE API
@@ -62,10 +63,18 @@ const MoviesService = {
 
     // THE MOVIE DATABASE
     async fetchMovieData(id, searchValue) {
-        let url = `${TMDB_CALL}&query=${searchValue}`;
+        let url = `${TMDB_CALL}`;
 
+        console.log('====================================');
+        console.log(id);
+        console.log('====================================');
         if (id) {
-            url += `${TMDB_CALL}/${id}-${searchValue}`;
+            url += `movie/${id}?${API_KEY}`;
+            console.log(url);
+        }
+
+        else {
+            url += `search/movie?${API_KEY}&query=${searchValue}`;
         }
 
         try {

@@ -21,7 +21,7 @@ const Home = () => {
     }, []);
 
     return (
-        <div>
+        <div className="pages-background">
             <Navbar />
             {cardData && 
                 <div>
