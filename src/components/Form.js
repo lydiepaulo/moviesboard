@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFieldArray, useForm } from "react-hook-form";
 import { GrAddCircle, GrHome, GrPrevious } from "react-icons/gr";
 import MoviesService from '../services/MoviesService';
@@ -9,38 +9,15 @@ const Form = (props) => {
     // FORM VARIABLES
     const [formStep, setFormStep] = useState(0);
     const [checked, setChecked] = useState(true);
+    const [TmdbSearchedMovie, setTmdbSearchedMovie] = useState(null);
+    const [TmdbSearchId, setTmdbSearchId] = useState(null);
     const [TmdbMovie, setTmdbMovie] = useState(null);
-    const [TmdbId, setTmdbId] = useState(null);
-    const [myMovie, setMyMovie] = useState(null);
-    const searchRef = useRef('');
-
-    // DATA FROM TMDB
-
-    // get the title
-    const onInput = () => {
-        if (searchRef.current.value !== '') {
-            MoviesService.fetchMovieData(undefined, searchRef.current.value)
-                .then((apiResult) => {
-                    setTmdbMovie(apiResult.results);
-            });
-        }
-    }
-
-    const onClickUl = (e) => {
-        setTmdbMovie(null);
-        setTmdbId(e.target.id);
-        console.log(e.target.id, TmdbId);
-        MoviesService.fetchMovieData(TmdbId)
-            .then((apiResult) => {
-                setMyMovie(apiResult.results[0]);
-                console.log(apiResult.results[0]);
-            });
-    }
 
     // FORM CONFIGURATION
     const {
         watch,
         control,
+        setValue,
         register,
         formState: { errors, isValid },
         handleSubmit,
@@ -60,6 +37,67 @@ const Form = (props) => {
     /* actors : { photo: "https://static1.ozap.com/articles/9/44/03/59/@/4441736-vanessa-paradis-128x128-1.jpg", name: "vanessa paradis", character: "joe le taxi" },{ photo: "https://static1.ozap.com/articles/9/44/03/59/@/4441736-vanessa-paradis-128x128-1.jpg", name: "vanessa paradis", character: "joe le taxi" } */
     /* similar : movies { poster: "https://m.media-amazon.com/images/I/510fWlbNvNL._AC_.jpg", title: "spider-bidule", release_date: "2012-12-12" } */
 
+
+    // DATA FROM TMDB
+
+    // get the title
+    const onInput = (e) => {
+        //let searchValue = searchRef.current.value;
+        let searchValue = e.target.value;
+
+        if (searchValue !== '') {
+            MoviesService.fetchMovieData(undefined, searchValue)
+                .then((apiResult) => {
+                    setTmdbSearchedMovie(apiResult.results);
+            });
+        }
+    }
+
+    const onClickUl = (e) => {
+        setTmdbSearchedMovie(null);
+        setTmdbSearchId(e.target.id);
+    }
+
+    useEffect(() => {
+       if (TmdbSearchId) {
+        MoviesService.fetchMovieData(TmdbSearchId)
+        .then((apiResult) => {
+            setTmdbMovie(apiResult);
+            setValue("title", apiResult.title, {
+                shouldValidate: true,
+                shouldDirty: true
+            });
+
+            setValue("release_date", apiResult.release_date, {
+                shouldValidate: true,
+                shouldDirty: true
+            });
+
+            setValue("description", apiResult.overview, {
+                shouldValidate: true,
+                shouldDirty: true
+            });
+            
+            if (apiResult.poster_path) {
+                let poster_url = `https://image.tmdb.org/t/p/original${apiResult.poster_path}`;
+                setValue("poster", poster_url, {
+                    shouldValidate: true,
+                    shouldDirty: true
+                });
+            }
+            
+            if (apiResult.backdrop_path) {
+                let backdrop_url = `https://image.tmdb.org/t/p/original${apiResult.backdrop_path}`;
+                setValue("backdrop", backdrop_url, {
+                    shouldValidate: true,
+                    shouldDirty: true
+                });
+            }
+        });
+       }
+    }, [TmdbSearchId, setValue]);
+
+    
     // control : add and remove new fields from the server
     const controlActors = useFieldArray({
         name: 'actors',
@@ -106,7 +144,7 @@ const Form = (props) => {
         if (formStep === 0) {
             return (
                 <button
-                    disabled={!isValid}
+                    disabled={isValid}
                     onClick={completeFormStep}
                     type="button"
                 >
@@ -116,7 +154,7 @@ const Form = (props) => {
         } else if (formStep === 1) {
             return (
                 <button
-                    disabled={!isValid}
+                    disabled={isValid}
                     type="submit"
                 >
                     Valider
@@ -170,20 +208,14 @@ const Form = (props) => {
                                 id="title"
                                 name="title"
                                 placeholder="Titre"
-                                {...register("title", {
-                                    required: {
-                                        value: "Required",
-                                        message: "Veuillez préciser un titre."
-                                    },
-                                })}
+                                {...register("title")}
                                 onInput={onInput}
-                                ref={searchRef}
                             />
 
-                            {TmdbMovie && TmdbMovie.length !== 0 && (
+                            {TmdbSearchedMovie && TmdbSearchedMovie.length !== 0 && (
                                 <ul>
-                                    {TmdbMovie.map((movie, key) =>
-                                        <li key={key} id={movie.id} onClick={onClickUl}>
+                                    {TmdbSearchedMovie.map((movie, key) =>
+                                        <li key={key.id} id={movie.id} onClick={onClickUl}>
                                             {movie.title}
                                             <span>{movie.release_date.split('-')[0]}</span>
                                         </li>
@@ -194,27 +226,21 @@ const Form = (props) => {
                         </fieldset>
 
                         {/* release date */}
-                        {/* <fieldset>
+                        <fieldset>
                             <label htmlFor="date">Date de sortie</label>
-                            <input
-                                type="text"
-                                id="date"
-                                name="date"
-                                placeholder="12-12-2021"
-                                {...register("release_date", {
-                                    required: {
-                                        value: "Required",
-                                        message: "Veuillez préciser une date."
-                                    },
-                                    pattern: {
-                                        value: /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)\d{2})$/i,
-                                        message: "Veuillez respecter le format : JJ-MM-AAAA."
-                                    }
-                                })}
-                            />
-                            {errors.release_date?.type === "required" && <p className="form__error-message">{errors.release_date.message}</p>}
-                            {errors.release_date?.type === "pattern" && <p className="form__error-message">{errors.release_date.message}</p>}
-                        </fieldset> */}
+                                <input
+                                    type="text"
+                                    id="date"
+                                    name="date"
+                                    placeholder="12-12-2021"
+                                    {...register("release_date", {
+                                        pattern: {
+                                            value: /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)\d{2})$/i,
+                                            message: "Veuillez respecter le format : JJ-MM-AAAA."
+                                        }
+                                    })}
+                                />
+                        </fieldset>
                     </section>
                 )}
 
@@ -226,20 +252,20 @@ const Form = (props) => {
                         <fieldset>
                             <label htmlFor="categories">
                                 <span>Catégories</span>
-                                {/* {TmdbMovie &&
-                                    TmdbMovie.map((genre) => (
+                                {TmdbMovie && 
+                                    TmdbMovie.genres.map((genre) => (
                                         <label key={genre.ids}>
                                             <input
                                                 name="categories"
                                                 type="checkbox"
-                                                value={genre}
+                                                value={genre.name}
                                                 defaultChecked={checked}
                                                 onChange={() => setChecked(!checked)}
                                                 {...register("categories")}
                                             />
-                                            {genre}
+                                            {genre.name}
                                         </label>
-                                    ))} */}
+                                    ))}
                             </label>
                             {/* <button onClick={handleAddNewCategorie}>Ajouter une catégorie</button> */}
                             {errors.categories?.type === "required" && <p className="form__error-message">Veuillez sélectionner une ou plusieurs catégories.</p>}

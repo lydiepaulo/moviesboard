@@ -65,9 +65,6 @@ const MoviesService = {
     async fetchMovieData(id, searchValue) {
         let url = `${TMDB_CALL}`;
 
-        console.log('====================================');
-        console.log(id);
-        console.log('====================================');
         if (id) {
             url += `movie/${id}?${API_KEY}`;
             console.log(url);

@@ -23,6 +23,7 @@ $Mulish: "Mulish", sans-serif;
         text-align: right;
         @include Hashira(400);
         margin: -25px 0 60px;
+        text-shadow: 1px 1px 0 $white;
         
         @include media-min($tablet) {
             @include Size-LH(8rem, 75%);

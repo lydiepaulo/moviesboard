@@ -3,8 +3,8 @@
     min-height: 100vh;
     background-color: $primary-dark;
     background-image:
-        radial-gradient(40vw 200px at -10% 0%, $white, transparent 90%),
-        radial-gradient(160% 100% at 94% 5%, $white, transparent 42%),
+        radial-gradient(40vw 200px at -10% 0%, $white, transparent 65%),
+        radial-gradient(145% 100% at 94% 5%, $white, transparent 62%),
         radial-gradient(360px 100vh at 0% 94%, $white, transparent 34%),
         radial-gradient(150% 114% at 70% 100%, $white, transparent 63%);
     overflow-x: hidden;
@@ -27,15 +27,17 @@
         align-items: center;
 
         // hover & placement
-        li:first-child {
-            .nav-link::after {
+        li {
+            width: 20px;
+
+            &:first-child .nav-link::after {
                 margin-top: 5px;
             }
-        }
 
-        li:last-child {
-            margin: -10px 0 -5px 16px;
-            font-size: 1.5rem;
+            &:last-child {
+                margin: -10px 0 -5px 16px;
+                font-size: 1.5rem;
+            }
         }
     }
 
@@ -63,7 +65,7 @@
 
         &:hover::after,
         &.activated::after {
-            width: 17px;
+            width: 100%;
             transition: width .5s;
         }
     }
