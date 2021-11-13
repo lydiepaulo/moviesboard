@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import GlobalFunctions from '../services/GlobalFunctions';
-import DeleteButton from './DeleteButton';
+import GlobalFunctions from '../../services/GlobalFunctions';
+import DeleteButton from '../Buttons/DeleteButton';
 
 const Card = ({ data }) => {
     const movieDate = data.release_date;

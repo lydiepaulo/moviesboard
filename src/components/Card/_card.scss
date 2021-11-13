@@ -83,27 +83,3 @@
         height: 130px; 
     }
 }
-
-.delete-button {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 70px;
-    padding: 6px 10px 3px;
-    font-weight: 600;
-    box-shadow: inset 0 0 15px darken($primary-dark, 3%), 0 0 4px rgba($primary-dark, .4);
-    border: 1px solid rgba($primary-light, .6);
-    color: $white;
-    background-color: $primary-dark;
-    text-shadow: 0 0 3px $primary-dark;
-
-    svg {
-        font-size: .75rem;
-        margin-bottom: 4px;
-        margin-left: 4px;
-
-        path {
-            stroke: $white;
-        }
-    }
-}

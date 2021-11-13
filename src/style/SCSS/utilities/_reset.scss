@@ -45,3 +45,19 @@ button {
 button {
     cursor: pointer;
 }
+
+select {
+    outline: none;
+    background-color: transparent !important;
+    border: none;
+    overflow: hidden;
+
+    &::-moz-focus-inner {
+        border: 0;
+        background-color: transparent;
+    }
+
+    option {
+        outline: none;
+    }
+}

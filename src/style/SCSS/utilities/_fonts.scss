@@ -18,24 +18,41 @@ $Mulish: "Mulish", sans-serif;
 }
 
 // use
+%title-small {
+    @include Mulish(600);
+    @include Size-LH(.54rem, 230%);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
 .title {
     &-large {
-        text-align: right;
         @include Hashira(400);
-        margin: -25px 0 60px;
         text-shadow: 1px 1px 0 $white;
+        margin-left: auto;
         
         @include media-min($tablet) {
-            @include Size-LH(8rem, 75%);
+            margin: -25px 0 40px;
+            text-align: center;
+            @include Size-LH(5rem, 80%);
         }
 
         @include media-max($tablet) {
             @include Size-LH(4rem, 75%);
+            margin: 30px 0 30px;
+            text-align: center;
         }
 
         span {
             display: block;
+
             &:last-child {
+                @include media-min($tablet) {
+                    @include Size-LH(10rem, 80%);
+                }
+                @include media-max($tablet) {
+                    @include Size-LH(10rem, 75%);
+                }
                 text-transform: uppercase;
                 font-style: italic;
             }
@@ -43,13 +60,12 @@ $Mulish: "Mulish", sans-serif;
     }
 
     &-medium {
-        color: blue;
+        @include Mulish(600);
+        text-transform: uppercase;
+        margin-bottom: 20px;
     }
 
     &-small {
-        @include Mulish(600);
-        @include Size-LH(.54rem, 230%);
-        text-transform: uppercase;
-        letter-spacing: 2px;
+        @extend %title-small;
     }
 }

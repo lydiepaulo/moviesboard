@@ -10,14 +10,15 @@
 @import "./utilities/mixin";
 
 //components
-@import "./components/card";
-@import "./components/form";
+@import "../../components/Card/card";
+@import "../../components/Form/form";
+@import "../../components/Buttons/buttons";
 @import "./components/locomotive-scroll";
 
 //pages
 @import "./pages/global";
-@import "./pages/home";
+@import "../../views/Home/home";
 @import "./pages/add";
-@import "./pages/details";
+@import "../../views/Details/details";
 @import "./pages/edit";
 @import "./pages/error";

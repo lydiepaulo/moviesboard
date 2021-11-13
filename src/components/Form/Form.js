@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useFieldArray, useForm } from "react-hook-form";
 import { GrAddCircle, GrHome, GrPrevious } from "react-icons/gr";
-import MoviesService from '../services/MoviesService';
+import MoviesService from '../../services/MoviesService';
 
 const MAX_STEPS = 5;
 
@@ -17,6 +17,7 @@ const Form = (props) => {
 
     // FORM CONFIGURATION
     const {
+        watch,
         control,
         setValue,
         register,
@@ -61,34 +62,23 @@ const Form = (props) => {
                 .then((apiResult) => {
                     setTmdbMovie(apiResult);
                     setValue("title", apiResult.title, {
-                        shouldValidate: true,
-                        shouldDirty: true
+                        shouldValidate: false
                     });
 
                     setValue("release_date", apiResult.release_date, {
-                        shouldValidate: true,
-                        shouldDirty: true
+                        shouldValidate: false
                     });
 
-                    setValue("description", apiResult.overview, {
-                        shouldValidate: true,
-                        shouldDirty: true
-                    });
+                    setValue("description", apiResult.overview);
 
                     if (apiResult.poster_path) {
                         let poster_url = `https://image.tmdb.org/t/p/original${apiResult.poster_path}`;
-                        setValue("poster", poster_url, {
-                            shouldValidate: true,
-                            shouldDirty: true
-                        });
+                        setValue("poster", poster_url);
                     }
 
                     if (apiResult.backdrop_path) {
                         let backdrop_url = `https://image.tmdb.org/t/p/original${apiResult.backdrop_path}`;
-                        setValue("backdrop", backdrop_url, {
-                            shouldValidate: true,
-                            shouldDirty: true
-                        });
+                        setValue("backdrop", backdrop_url);
                     }
                 });
 
@@ -98,44 +88,26 @@ const Form = (props) => {
 
                     for (let i = 0; i < apiResult.cast.length; i++) {
                         let profile = `https://image.tmdb.org/t/p/original${apiResult.cast[i].profile_path}`;
-                        setValue(`actors.${i}.photo`, profile, {
-                            shouldValidate: true,
-                            shouldDirty: true
-                        });
+                        setValue(`actors.${i}.photo`, profile);
 
-                        setValue(`actors.${i}.name`, apiResult.cast[i].character, {
-                            shouldValidate: true,
-                            shouldDirty: true
-                        });
-                        
-                        setValue(`actors.${i}.character`, apiResult.cast[i].character, {
-                            shouldValidate: true,
-                            shouldDirty: true
-                        });
+                        setValue(`actors.${i}.name`, apiResult.cast[i].character);
+
+                        setValue(`actors.${i}.character`, apiResult.cast[i].character);
                     }
 
                 })
-                    
+
             MoviesService.fetchMoreData(TmdbSearchId, "similar")
                 .then((apiResult) => {
                     setTmdbSimilarMovies(apiResult.results);
 
                     for (let i = 0; i < apiResult.results.length; i++) {
                         let poster = `https://image.tmdb.org/t/p/original${apiResult.results[i].backdrop_path}`;
-                        setValue(`similar_movies.${i}.poster`, poster, {
-                            shouldValidate: true,
-                            shouldDirty: true
-                        });
+                        setValue(`similar_movies.${i}.poster`, poster);
 
-                        setValue(`similar_movies.${i}.title`, apiResult.results[i].title, {
-                            shouldValidate: true,
-                            shouldDirty: true
-                        });
-                        
-                        setValue(`similar_movies.${i}.release_date`, apiResult.results[i].release_date, {
-                            shouldValidate: true,
-                            shouldDirty: true
-                        });
+                        setValue(`similar_movies.${i}.title`, apiResult.results[i].title);
+
+                        setValue(`similar_movies.${i}.release_date`, apiResult.results[i].release_date);
                     }
                 });
         }
@@ -188,7 +160,7 @@ const Form = (props) => {
         if (formStep === 0) {
             return (
                 <button
-                    disabled={isValid}
+                    disabled={!isValid}
                     onClick={completeFormStep}
                     type="button"
                 >
@@ -255,32 +227,36 @@ const Form = (props) => {
                             Trouver un film par titre ou date de sortie
                         </h2>
                         {/* title */}
-                        <fieldset>
+                        <div>
                             <label htmlFor="title">Titre</label>
                             <input
-                                key="title-id"
                                 type="text"
-                                id="title"
+                                id="title-id"
                                 name="title"
                                 placeholder="Titre"
-                                {...register("title")}
+                                {...register("title", {
+                                    required: {
+                                        value: "Required",
+                                        message: "Veuillez entrer un titre de film."
+                                    }
+                                })}
                                 onInput={onInput}
                             />
 
                             {TmdbSearchedMovie && TmdbSearchedMovie.length !== 0 && (
                                 <ul>
-                                    {TmdbSearchedMovie.map((movie, id) =>
-                                        <li key={id} id={movie.id} onClick={onClickUl}>
+                                    {TmdbSearchedMovie.map((movie) =>
+                                        <li key={movie.id} id={movie.id} onClick={onClickUl}>
                                             {movie.title}
                                         </li>
                                     )}
                                 </ul>
                             )}
                             {errors.title?.type === "required" && <p className="form__error-message">{errors.title.message}</p>}
-                        </fieldset>
+                        </div>
 
                         {/* release date */}
-                        <fieldset>
+                        <div>
                             <label htmlFor="date">Date de sortie</label>
                             <input
                                 type="text"
@@ -294,7 +270,7 @@ const Form = (props) => {
                                     }
                                 })}
                             />
-                        </fieldset>
+                        </div>
                     </section>
                 )}
 
@@ -303,14 +279,13 @@ const Form = (props) => {
                     <section className={formStep === 1 ? "block" : "hidden"}>
                         <h2 className="title-small">Personnaliser l'ajout</h2>
                         {/* categories */}
-                        <fieldset>
+                        <div>
                             <label htmlFor="categories">
                                 <span>Catégories</span>
                                 {TmdbMovie &&
                                     TmdbMovie.genres.map((genre) => (
-                                        <label>
+                                        <label key={genre.id}>
                                             <input
-                                                key={genre.id}
                                                 name="categories"
                                                 type="checkbox"
                                                 value={genre.name}
@@ -324,10 +299,10 @@ const Form = (props) => {
                             </label>
                             {/* <button onClick={handleAddNewCategorie}>Ajouter une catégorie</button> */}
                             {errors.categories?.type === "required" && <p className="form__error-message">Veuillez sélectionner une ou plusieurs catégories.</p>}
-                        </fieldset>
+                        </div>
 
                         {/* description */}
-                        <fieldset>
+                        <div>
                             <label htmlFor="description">Description</label>
                             <input
                                 type="textarea"
@@ -341,10 +316,10 @@ const Form = (props) => {
                                 })}
                             />
                             {errors.description?.type === "required" && <p className="form__error-message">{errors.description.message}</p>}
-                        </fieldset>
+                        </div>
 
                         {/* poster */}
-                        <fieldset>
+                        <div>
                             <label htmlFor="poster">Affiche (url)</label>
                             <input
                                 type="url"
@@ -354,10 +329,10 @@ const Form = (props) => {
                                 pattern="https://.*"
                                 {...register("poster")}
                             />
-                        </fieldset>
+                        </div>
 
                         {/* backdrop */}
-                        <fieldset>
+                        <div>
                             <label htmlFor="backdrop">Bannière de fond (url)</label>
                             <input
                                 type="url"
@@ -368,10 +343,10 @@ const Form = (props) => {
                                 size="30"
                                 {...register("backdrop")}
                             />
-                        </fieldset>
+                        </div>
 
                         {/* actors */}
-                        <fieldset>
+                        <div>
                             <label htmlFor="actors">
                                 <span>Acteur·ice·s</span>
                                 {TmdbActors && TmdbActors.length !== 0 && (
@@ -416,10 +391,10 @@ const Form = (props) => {
                             </label>
                             {/* <button onClick={handleAddNewActor}>Ajouter un acteur</button> */}
                             {errors.actors && <p className="form__error-message">Veuillez sélectionner un·e ou plusieurs acteur·ice·s.</p>}
-                        </fieldset>
+                        </div>
 
                         {/* similar movies */}
-                        <fieldset>
+                        <div>
                             <label htmlFor="similar">
                                 <span>Films du même genre</span>
                                 {TmdbSimilarMovies && TmdbSimilarMovies.length !== 0 && (
@@ -465,7 +440,7 @@ const Form = (props) => {
                             </label>
                             {/* <button onClick={handleAddNewActor}>Ajouter un acteur</button> */}
                             {errors.actors && <p className="form__error-message">Veuillez sélectionner un·e ou plusieurs acteur·ice·s.</p>}
-                        </fieldset>
+                        </div>
                     </section>
                 )}
 
@@ -483,9 +458,9 @@ const Form = (props) => {
 
                 {/* final button */}
                 {renderNextButton()}
-                {/*     <pre>
-                            {JSON.stringify(watch(), null, 2)}
-                        </pre> */}
+                <pre>
+                    {JSON.stringify(watch(), null, 2)}
+                </pre>
             </form>
         </div>
     );

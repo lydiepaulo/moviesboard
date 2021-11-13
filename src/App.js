@@ -1,8 +1,8 @@
 import './style/SCSS/App.scss';
-import Home from './views/Home';
+import Home from './views/Home/Home';
 import Add from './views/Add';
 import Edit from './views/Edit';
-import Details from './views/Details';
+import Details from './views/Details/Details';
 import Error from './views/Error';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 

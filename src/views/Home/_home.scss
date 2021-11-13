@@ -1,0 +1,47 @@
+.home {
+    &__horizontal-scroll {
+        display: flex;
+        margin:  50px -100px 0;
+        padding: 30px 100px 113px;
+        width: 100vw;
+        overflow-y: auto;
+    }
+
+    &__search {
+        text-align: center;
+
+        input[type="search"] {
+            display: block;
+            margin: 0 auto;
+            background-color: $white;
+            border-radius: 70px;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+
+            @include media-min($mobile) {
+                width: 320px;
+            }
+
+            @include media-max($mobile) {
+                width: 100%;
+            }
+
+            &::-webkit-search-cancel-button {
+                -webkit-appearance: none;
+                appearance: none;
+                height: 15px;
+                width: 15px;
+                margin-right: -6px;
+                background: url(https://pro.fontawesome.com/releases/v5.10.0/svgs/solid/times-circle.svg) no-repeat 50% 50%;
+                background-size: contain;
+                opacity: 0;
+                pointer-events: none;
+            }
+
+            &:focus::-webkit-search-cancel-button {
+                opacity: .3;
+                pointer-events: all;
+            }
+        }
+    }
+}

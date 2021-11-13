@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import Navbar from '../components/Navbar';
-import MoviesService from '../services/MoviesService';
-import Card from '../components/Card';
+import Card from '../../components/Card/Card';
+import Navbar from '../../components/Navbar';
+import MoviesService from '../../services/MoviesService';
 
 const Home = () => {
     const [myMovies, setMyMovies] = useState(null);
@@ -37,7 +37,8 @@ const Home = () => {
     //select a filter method
     const filteredSearch = (e) => {
         filterRef.current.value = e.target.value;
-        if (filterRef.current.value === "Tout") {
+
+        if (filterRef.current.value === "tout" || filterRef.current.value === "") {
             displayAllMovies();
         }
 
@@ -65,18 +66,16 @@ const Home = () => {
                     <span>board</span>
                 </h1>
 
-                {/* DEMANDER À THIERRY : BALISES FORM ???? */}
-                <span className="home__search-bar">
-                    <input ref={inputRef} onKeyDown={onKeyDown} type="text" placeholder="Titre, date de sortie, catégorie" id="search-bar" />
-                </span>
-                <select ref={filterRef} onChange={filteredSearch} name="filter" id="filter-select">
-                    <option value="title_like">Titre</option>
-                    <option value="release_date_like">Date de sortie</option>
-                    <option value="categories_like">Catégories</option>
-                </select>
-
-
-
+                <div className="home__search">
+                    {/* <h2 class="title-medium">Consulter par filtres :</h2> */}
+                    <input className="home__search-bar" ref={inputRef} onKeyDown={onKeyDown} type="search" placeholder="Titre, date de sortie, catégorie" id="search-bar" />
+                    <select ref={filterRef} onChange={filteredSearch} name="filter" id="filter-select" className="home__search--select" multiple>
+                        <option value="tout">Tout</option>
+                        <option value="title_like">Titre</option>
+                        <option value="release_date_like">Date de sortie</option>
+                        <option value="categories_like">Catégories</option>
+                    </select>
+                </div>
 
                 <div>
                     {/* GÉRER CAS D'ERREUR SERVEUR : ne fonctionne pas pour l'instant */}
@@ -87,10 +86,10 @@ const Home = () => {
                             {myMovies !== 0 &&
                                 myMovies.map((data) => (
                                     <Card key={data.id} id={data.id} data={data} />
-                                    ))
+                                ))
                             }
                             {myMovies.length === 0 &&
-                                <h2 class="title-medium">Ce film n'est pas présent dans la bibliothèque !</h2>
+                                <h2 class="title-medium">Ce film n'est pas présent dans la bibliothèque…</h2>
                             }
                         </div>
                     )}

@@ -4,7 +4,7 @@ import { GrClose } from 'react-icons/gr';
 const DeleteButton = () => {
     return (
         <button className="delete-button">
-            <GrClose /> <span className="title-small">Supprimer</span>
+            <GrClose /> Supprimer
         </button>
     );
 };
