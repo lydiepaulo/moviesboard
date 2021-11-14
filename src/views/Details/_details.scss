@@ -32,7 +32,7 @@
         z-index: 2;
     }
 
-    &__grid {
+    &__swiper {
         display: grid;
         width: calc(100vw - 200px);
         height: calc(100vh - 250px);
@@ -67,7 +67,9 @@
             overflow: hidden;
             padding: 25px;
 
-            div:first-child {}
+            div:first-child {
+
+            }
 
             div:last-child {
                 overflow: auto;
