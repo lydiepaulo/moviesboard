@@ -4,9 +4,16 @@ import EditButton from '../../components/Buttons/EditButton';
 import MoviesService from '../../services/MoviesService';
 import DeleteButton from '../../components/Buttons/DeleteButton';
 import { useParams } from 'react-router';
+import { Swiper, SwiperSlide } from 'swiper/react/swiper-react.js';
+import SwiperCore, { Autoplay } from 'swiper'
+import { Navigation, Pagination } from 'swiper';
+import 'swiper/swiper.scss';
+import 'swiper/modules/navigation/navigation.scss';
+import 'swiper/modules/pagination/pagination.scss';
 
 const Home = () => {
     const { id } = useParams();
+    SwiperCore.use([Autoplay]);
 
     const [cardData, setCardData] = useState(null);
 
@@ -30,22 +37,35 @@ const Home = () => {
 
                         <div className="details__swiper">
                             <div className="details__swiper--bg2" style={{ backgroundImage: `url(${cardData.backdrop})` }}></div>
-                            <div className="details__swiper--container">
+                            <Swiper
+                                className="details__swiper--content"
+                                modules={[Navigation, Pagination]}
+                                centeredSlides= {true}
+                                pagination={{
+                                    "clickable": true
+                                }}
+                                navigation={true}
+                                /* autoplay={{
+                                    delay: 2000,
+                                    disableOnInteraction: false,
+                                    }} */
+                                slidesPerView={1}
+                                onSlideChange={() => console.log('slide change')}
+                                onSwiper={(swiper) => console.log(swiper)}
+                            >
                                 {/* TAB 1: informations */}
-                                <div>
+                                <SwiperSlide>
                                     <img src={cardData.poster} alt="Couverture" />
                                     {cardData.release_date}
                                     {cardData.categories}
 
-
-
                                     <EditButton key={id} id={id} />
 
-                                    <DeleteButton />
-                                </div>
+                                    <DeleteButton id={cardData.id} title={cardData.title} />
+                                </SwiperSlide>
 
                                 {/* TAB 2: actors */}
-                                <div>
+                                <SwiperSlide>
                                     {cardData.actors.map((actors, id) => (
                                         <div className="details-main__actor">
                                             <img src={actors.photo} alt={actors.name} />
@@ -54,16 +74,16 @@ const Home = () => {
                                         </div>
                                     ))
                                     }
-                                </div>
-                                
+                                </SwiperSlide>
+
                                 {/* TAB 3: similar movies */}
-                                <div>
+                                <SwiperSlide>
                                     {cardData.similar_movies.map((movie, id) => (
                                         <span key={id}>{movie.title}</span>
                                     ))
                                     }
-                                </div>
-                            </div>
+                                </SwiperSlide>
+                            </Swiper>
                         </div>
                     </div>
                 </div>

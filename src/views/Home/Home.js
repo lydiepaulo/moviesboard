@@ -2,14 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import Card from '../../components/Card/Card';
 import Navbar from '../../components/Navbar/Navbar';
 import { Swiper, SwiperSlide } from 'swiper/react/swiper-react.js';
+import { Navigation, Pagination } from 'swiper';
 import 'swiper/swiper.scss';
 import 'swiper/modules/navigation/navigation.scss';
 import 'swiper/modules/pagination/pagination.scss';
 import MoviesService from '../../services/MoviesService';
-import { Navigation, Pagination } from 'swiper';
 
 const Home = () => {
-    const [movies, setMovies] = useState(null)
     const [myMovies, setMyMovies] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
     const inputRef = useRef();
@@ -63,16 +62,6 @@ const Home = () => {
         }
     }
 
-    // delete card
-    function deleteMovie({ data, id }) {
-        MoviesService.remove(id)
-            .then(() => {
-                const newMovieArray = movies.filter((data) => data.id !== id);
-                setMovies(newMovieArray);
-            })
-            .catch((err) => console.error());
-    }
-
     return (
         <div className="pages-background">
             <Navbar />
@@ -123,7 +112,7 @@ const Home = () => {
                             {myMovies !== 0 &&
                                 myMovies.map((data, slideContent, index) => (
                                     <SwiperSlide key={slideContent} virtualIndex={index}>
-                                        <Card key={data.id} onDelete={deleteMovie} id={data.id} data={data} />
+                                        <Card key={data.id} id={data.id} data={data} />
                                     </SwiperSlide>
                                 ))
                             }

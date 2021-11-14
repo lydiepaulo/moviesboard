@@ -36,10 +36,18 @@
             }
         }
     }
-}
 
-%horizontal-scroll {
-    display: flex;
-    width: 100vw;
-    overflow-y: auto;
+    .swiper {
+        @include media-min($tablet) {
+            width: 100vw;
+            margin: 50px -100px 0 !important;
+            padding: 30px 100px 113px !important;
+        }
+        
+        @include media-max($tablet) {
+            width: 100vw;
+            margin: 50px -24px 0 !important;
+            padding: 30px 24px 113px !important;
+        }
+    }
 }

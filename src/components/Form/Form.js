@@ -160,14 +160,23 @@ const Form = (props) => {
         )
     }
 
-    // go back to Homepage
-    const backToHome = () => {
-        return (
-            <Link to={{ pathname: "/" }}>
-                <GrHome /> Retourner à l'accueil
-            </Link>
-        )
-    }
+    // EDIT FORM : pre-fill
+    useEffect(() => {
+        if (props.movie) {
+            setInputs({
+                title: props.movie.title,
+                release_date: props.movie.release_date,
+                description: props.movie.description,
+                categories: props.movie.categories,
+                poster: props.movie.poster,
+                backdrop: props.movie.backdrop,
+                actors: props.movie.actors,
+                similar_movies: props.movie.similar_movies,
+            })
+            
+        }
+    }, [props.movie]);
+
 
     // FORM FUNCTIONS
     // submit
@@ -177,6 +186,15 @@ const Form = (props) => {
         if (formStep + 1 === 2) {
             props.onValidation(inputs);
         }
+    }
+
+    // go back to Homepage
+    const backToHome = () => {
+        return (
+            <Link to={{ pathname: "/" }}>
+                <GrHome /> Retourner à l'accueil
+            </Link>
+        )
     }
 
     return (
@@ -369,10 +387,10 @@ const Form = (props) => {
                 {formStep === 2 ? (
                     <section>
                         <h2>Bien joué !</h2>
-                        <p>Le film a été ajouté avec succès.</p>
+                        <p>Le film a été ajouté/modifié avec succès.</p>
                         {newMovieButton()}
                         {backToHome()}
-                        
+
                     </section>
                 )
                     : <button type="submit"> {formStep ? "Valider" : "Rechercher"}</button>

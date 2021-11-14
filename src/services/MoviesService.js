@@ -7,14 +7,14 @@ const API_KEY = `?api_key=${process.env.REACT_APP_TMDB_API_KEY}`;
 const MoviesService = {
     // PRIVATE API
     async fetchMovies(id, filter, value) {
-        let url = `${API_CALL}/movies`;
+        let url = `${API_CALL}/movies?_sort=id&_order=desc`;
 
         if (id) {
-            url += `/${id}`;
+            url = `${API_CALL}/movies/${id}`;
         }
 
         else if (filter && value) {
-            url += `?${filter}=${value}`;
+            url = `${API_CALL}/movies?${filter}=${value}`;
         }
 
         try {
@@ -44,19 +44,9 @@ const MoviesService = {
     },
 
     // edit a movie
-    update(movie) {
+    update(movie, id) {
         return axios
-            .put(`${API_CALL}/movies/${movie.id}`, {
-                gender: movie.gender,
-                firstname: movie.firstname,
-                lastname: movie.lastname,
-                email: movie.email,
-                phone: movie.phone,
-                birthdate: movie.birthdate,
-                city: movie.city,
-                country: movie.country,
-                photo: movie.photo,
-            })
+            .put(`${API_CALL}/movies/${id}`, movie)
             .then((response) => response.data)
             .catch(errorHandler);
     },
@@ -87,6 +77,7 @@ const MoviesService = {
 
 const errorHandler = (err) => {
     console.log(err);
+    return "error";
 };
 
 export default MoviesService;

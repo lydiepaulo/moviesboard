@@ -5,13 +5,19 @@ option {
     justify-content: center;
     align-items: center;
     border-radius: 70px;
-    padding: 6px 10px;
     font-weight: 600;
     text-shadow: 0 0 3px $primary-dark;
     color: $white;
     box-shadow: inset 0 0 15px darken($primary-dark, 3%), 0 0 4px rgba($primary-dark, .4);
-
     @extend %title-small;
+
+    @include media-min($mobile) {
+        padding: 6px 10px;
+    }
+    
+    @include media-max($mobile) {
+        padding: 6px;
+    }
 
     svg {
         font-size: .75rem;
@@ -42,7 +48,7 @@ select {
         outline: none;
 
         &:not(:last-of-type) {
-            margin-right: 8px;
+            margin-right: 7px;
         }
 
         &:hover,

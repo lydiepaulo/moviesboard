@@ -13,7 +13,7 @@
         }
 
         @include media-max($tablet) {
-            padding: 24px;
+            padding: 8px;
         }
     }
 
@@ -30,30 +30,37 @@
 }
 
 .swiper {
+    width: 100vw;
+    margin-left: -100px;
+    margin-right: -100px;
+    &-button-prev:after,
+    &-button-next:after {
+        color: lighten($white, 100%) !important;
+    }
+
+
     @include media-min($tablet) {
-        width: 100vw;
         margin: 50px -100px 0 !important;
         padding: 30px 100px 113px !important;
     }
     
     @include media-max($tablet) {
         width: 100vw;
-        margin: 50px -24px 0 !important;
-        padding: 30px 24px 113px !important;
+        margin: 50px -8px 0 !important;
+        padding: 30px 8px 113px !important;
     }
 
-    &-button-prev:after,
-    &-button-next:after {
-        color: lighten($white, 100%) !important;
-    }
+    &-pagination {
+        padding: 0 30px;
 
-    &-pagination-bullet {
-        background-color: darken($primary-dark, 20%) !important;
-        box-shadow: inset 2px 2px 2px darken($primary-dark, 100%);
-
-        &-active {
-            background-color: lighten($white, 50%) !important;
-            box-shadow: inset 0 0 5px darken($white, 10%), 0 0 4px rgba($primary-dark, 10%);
+        &-bullet {
+            background-color: darken($primary-dark, 20%) !important;
+            box-shadow: inset 2px 2px 2px darken($primary-dark, 100%);
+    
+            &-active {
+                background-color: lighten($white, 50%) !important;
+                box-shadow: inset 0 0 5px darken($white, 10%), 0 0 4px rgba($primary-dark, 10%);
+            }
         }
     }
 
