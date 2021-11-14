@@ -1,5 +1,27 @@
 .details {
+    position: relative;
+
+    &-bg {
+        width: 100vw;
+        height: 100vh;
+        background-size: cover;
+        position: fixed;
+
+        &::after {
+            content: '';
+            position: absolute;
+
+            top: 0;
+            left:0;
+            display: block;
+            width: 100vw;
+            height: 100vh;
+            @extend %gradient;
+        }
+    }
+
     &-main {
-        position: relative;
+        position: absolute;
+        z-index: 2;
     }
 }

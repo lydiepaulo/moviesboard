@@ -25,12 +25,11 @@ const Home = () => {
 
     return (
         <div className="details pages-background">
-            <Navbar />
             {cardData && 
-                <div>
+                <div className="details-bg" style={{ backgroundImage: `url(${cardData.backdrop})` }}>
+                    <Navbar />
                     <div class="details-main">
                         <h1 className="title-large">{cardData.title}</h1>
-                        {cardData.backdrop}
                         {cardData.release_date}
                         {cardData.categories}
                         <img src={cardData.poster} alt="Couverture" />

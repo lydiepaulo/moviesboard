@@ -84,16 +84,9 @@ const MoviesService = {
         }
     },
 
-    async fetchMoreData(movie_id, more_data) {
-        let url = `${TMDB_CALL}movie/${movie_id}/${more_data}${API_KEY}`;
-        try {
-            const response = await axios
-                .get(url);
-            return response.data;
-        } catch (err) {
-            return errorHandler(err);
-        }
-    }
+    async fetchMoreData(movie_id) {
+        
+    },
 }
 
 const errorHandler = (err) => {
