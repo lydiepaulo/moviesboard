@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import GlobalFunctions from '../../services/GlobalFunctions';
 import DeleteButton from '../Buttons/DeleteButton';
+import EditButton from '../Buttons/EditButton';
 
 const Card = ({ data }) => {
     const movieDate = data.release_date;
@@ -23,6 +24,7 @@ const Card = ({ data }) => {
                     <p className="card-description">
                         {data.description}
                     </p>
+                    <EditButton />
                     <DeleteButton />
                 </div>
             </figcaption>

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Card from '../../components/Card/Card';
 import Navbar from '../../components/Navbar';
 import MoviesService from '../../services/MoviesService';
+import { LocomotiveScrollProvider } from 'react-locomotive-scroll'
 
 const Home = () => {
     const [myMovies, setMyMovies] = useState(null);

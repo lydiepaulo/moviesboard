@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { GrAddCircle, GrHome, GrPrevious } from "react-icons/gr";
 import MoviesService from '../../services/MoviesService';
 import axios from "axios";
+import { Link } from 'react-router-dom';
 
 
 const MAX_STEPS = 3;
@@ -14,10 +15,7 @@ const Form = (props) => {
     const [formStep, setFormStep] = useState(0);
     const [TmdbSearchedMovie, setTmdbSearchedMovie] = useState(null);
     const [TmdbSearchId, setTmdbSearchId] = useState(null);
-    const [TmdbMovie, setTmdbMovie] = useState(null);
     const [checked, setChecked] = useState(true);
-    const [TmdbActors, setTmdbActors] = useState(null);
-    const [TmdbSimilarMovies, setTmdbSimilarMovies] = useState(null);
     const [inputs, setInputs] = useState({
         title: "",
         release_date: "",
@@ -53,7 +51,6 @@ const Form = (props) => {
             if (formStep === 0) {
                 MoviesService.fetchMovieData(TmdbSearchId)
                     .then((apiResult) => {
-                        setTmdbMovie(apiResult);
                         const { title, release_date, overview, poster_path, backdrop_path, genres } = apiResult
                         let poster_url = "";
                         let backdrop_url = "";
@@ -163,6 +160,15 @@ const Form = (props) => {
         )
     }
 
+    // go back to Homepage
+    const backToHome = () => {
+        return (
+            <Link to={{ pathname: "/" }}>
+                <GrHome /> Retourner à l'accueil
+            </Link>
+        )
+    }
+
     // FORM FUNCTIONS
     // submit
     function onSubmit(e) {
@@ -170,7 +176,6 @@ const Form = (props) => {
         completeFormStep();
         if (formStep + 1 === 2) {
             props.onValidation(inputs);
-            console.log(inputs);
         }
     }
 
@@ -233,18 +238,19 @@ const Form = (props) => {
                         <h2 className="title-small">Personnaliser l'ajout</h2>
                         {/* categories */}
                         <div>
-                            <label htmlFor="categories">
+                            <label key="key" htmlFor="categories">
                                 <span>Catégories</span>
                                 {inputs &&
-                                    inputs.categories.map((categorie) => (
-                                        <label key={categorie.id}>
+                                    inputs.categories.map((categorie, id) => (
+                                        <label key={id}>
+                                            {categorie}
                                             <input
                                                 name="categories"
                                                 type="checkbox"
-                                                value={categorie.name}
+                                                value={categorie}
                                                 defaultChecked={checked}
+                                                onChange={() => setChecked(!checked)}
                                             />
-                                            {categorie.name}
                                         </label>
                                     ))}
                             </label>
@@ -300,7 +306,7 @@ const Form = (props) => {
                                         {inputs.actors.map((actors, index) =>
                                             <li key={index}>
                                                 <span>Photo</span>
-                                                <img src={actors.photo} width={100} />
+                                                <img src={actors.photo} alt={`${actors.name}`} width={100} />
                                                 <span>Acteur·ice</span>
                                                 <h3>{actors.name}</h3>
                                                 <span>Rôle</span>
@@ -332,7 +338,7 @@ const Form = (props) => {
                                             <li key={index}>
 
                                                 <span>Poster</span>
-                                                <img src={movies.poster} width={100} />
+                                                <img src={movies.poster} alt={`${movies.title}`} width={100} />
 
                                                 <span>Titre</span>
                                                 <h3>{movies.title}</h3>
@@ -365,9 +371,8 @@ const Form = (props) => {
                         <h2>Bien joué !</h2>
                         <p>Le film a été ajouté avec succès.</p>
                         {newMovieButton()}
-                        <button>
-                            <GrHome /> Retourner à l'accueil
-                        </button>
+                        {backToHome()}
+                        
                     </section>
                 )
                     : <button type="submit"> {formStep ? "Valider" : "Rechercher"}</button>
