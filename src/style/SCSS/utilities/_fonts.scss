@@ -20,7 +20,6 @@ $Mulish: "Mulish", sans-serif;
 // use
 %title-small {
     @include Mulish(600);
-    @include Size-LH(.54rem, 230%);
     text-transform: uppercase;
     letter-spacing: 2px;
 }
@@ -62,10 +61,10 @@ $Mulish: "Mulish", sans-serif;
     &-medium {
         @include Mulish(600);
         text-transform: uppercase;
-        margin-bottom: 20px;
     }
 
     &-small {
         @extend %title-small;
+        @include Size-LH(.54rem, 230%);
     }
 }

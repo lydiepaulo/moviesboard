@@ -63,7 +63,7 @@ const Home = () => {
     }
 
     return (
-        <div className="pages-background">
+        <div className="home pages-background">
             <Navbar />
             <main className="home-main">
                 <h1 className="title-large">
@@ -106,8 +106,6 @@ const Home = () => {
                                   slidesPerView: 3,
                                 },
                             }}
-                            onSlideChange={() => console.log('slide change')}
-                            onSwiper={(swiper) => console.log(swiper)}
                         >
                             {myMovies !== 0 &&
                                 myMovies.map((data, slideContent, index) => (

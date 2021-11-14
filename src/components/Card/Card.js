@@ -24,8 +24,10 @@ const Card = ({ data }) => {
                     <p className="card-description">
                         {data.description}
                     </p>
-                    <EditButton id={data.id} />
-                    <DeleteButton id={data.id} title={data.title} />
+                    <div class="card-buttons">
+                        <EditButton id={data.id} />
+                        <DeleteButton id={data.id} title={data.title} />
+                    </div>
                 </div>
             </figcaption>
         </figure>

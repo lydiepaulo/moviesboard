@@ -31,23 +31,29 @@
 
 .swiper {
     width: 100vw;
-    margin-left: -100px;
-    margin-right: -100px;
     &-button-prev:after,
     &-button-next:after {
         color: lighten($white, 100%) !important;
     }
 
-
     @include media-min($tablet) {
-        margin: 50px -100px 0 !important;
-        padding: 30px 100px 113px !important;
+        margin-left: -100px !important;
+        margin-right: -100px !important;
     }
     
     @include media-max($tablet) {
-        width: 100vw;
-        margin: 50px -8px 0 !important;
-        padding: 30px 8px 113px !important;
+        margin-left: -8px !important;
+        margin-right: -8px !important;
+    }
+
+    &-wrapper {
+        @include media-min($tablet) {
+            margin-bottom: 113px;
+        }
+        
+        @include media-max($tablet) {
+            margin-bottom: 113px;
+        }
     }
 
     &-pagination {

@@ -1,6 +1,12 @@
 .details {
     position: relative;
 
+    &-buttons {
+        @include flexJust(flex-end);
+        z-index: 2;
+        margin-bottom: -45px;
+    }
+
     &-bg {
         width: 100vw;
         height: 100vh;
@@ -32,27 +38,31 @@
         z-index: 2;
     }
 
+    img {
+        border-radius: 15px;
+        box-shadow: 0 0 6px rgba($black, .2);
+    }
+
     &__swiper {
         display: grid;
         width: calc(100vw - 200px);
-        height: calc(100vh - 250px);
         min-height: 700px;
-
-        img {
-            width: 200px;
-        }
 
         &--bg2 {
             grid-row: 1;
             grid-column: 1;
             width: 100%;
-            height: 100%;
+            height: calc(100vh - 250px);
             border-radius: 20px;
-            background-size: cover;
-            box-shadow: 0 55px 75px -20px darken($primary-dark, 30%);
+            box-shadow: 0 55px 75px -20px rgba($black, .2);
+            background-position: center;
+            background-size: auto 180%;
+            animation: background-image 5s ease forwards;
 
             &::after {
-                background-color: rgba($primary-dark, .2);
+                background-color: $black;
+                opacity: .2;
+                animation: background-image__darken 3s ease forwards;
                 border-radius: 20px;
             }
         }
@@ -61,24 +71,154 @@
             grid-row: 1;
             grid-column: 1;
             height: 100%;
+        }
 
-            .swiper {
-                width: 100%;
+        &--flex {
+            width: 100%;
+            height: 100%;
+            @include flexDirAlign(row-reverse, flex-end);
+            gap: 16px;
 
-                &-slide {
-                    padding: 0 3vw;
+            div:first-child {
+                img {
+                    height: 400px;
+                }
 
-                    &-active {
-                        opacity: 1;
-                        transition: all 2s;
-                    }
+                @include media-max($tablet) {
+                    display: none;
+                }
+            }
 
-                    &-next {
-                        opacity: 0;
-                        transition: all 0s;
+            div:last-child {
+                div {
+                    text-align: right;
+                    padding-right: 20px;
+                    color: white;
+                }
+            }
+        }
+
+        &--from-left {
+            animation: details__swiper--from-left 5s ease forwards;
+        }
+
+        &--description {
+            margin-top: 20px;
+            max-height: 250px;
+            max-width: 400px;
+            overflow: auto;
+            font-size: 1.3rem;
+        }
+
+        &--flex2 {
+            @include flexAlign(flex-end);
+            overflow-x: auto;
+            height: 100%;
+            margin: 0 auto;
+
+            div {
+                height: 300px;
+                margin-left: 20px;
+                color: $white;
+                text-align: center;
+
+                img {
+                    width: 150px;
+                }
+
+                span {
+                    display: block;
+                    line-height: 180%;
+
+                    &:first-of-type {
+                        margin-top: 10px;
                     }
                 }
             }
         }
+
+        &--similar {
+            @include flexJustAlign(flex-end, flex-end);
+            height: 100%;
+            color: $white;
+            text-align: right;
+            
+            &-list {
+                font-size: 1.3rem;
+                height: 400px;
+                overflow: auto;
+                padding-right: 20px;
+
+                p {
+                    margin-bottom: 4px;
+                }
+            }
+
+            .title-medium {
+                margin: 0 20px 20px 0;
+            }
+        }
+    }
+
+    .swiper {
+        &-wrapper {
+            height: calc(100vh - 250px);
+        }
+
+        &-slide {
+            @include media-min($tablet) {
+                padding: 30px 130px;
+            }
+
+            @include media-max($tablet) {
+                padding: 30px 8px;
+            }
+
+            &-active {
+                opacity: 1;
+                transition: all 2s;
+            }
+
+            &-next {
+                opacity: 0;
+                transition: all 0s;
+            }
+        }
+
+        &-pagination {
+            bottom: 50px !important;
+        }
+    }
+}
+
+// ANIMATIONS
+
+@keyframes background-image {
+    0% {
+        background-size: auto 180%;
+    }
+
+    100% {
+        background-size: auto 120%;
+    }
+}
+
+@keyframes background-image__darken {
+    0% {
+        opacity: .3;
+    }
+
+    100% {
+        opacity: .7;
+    }
+}
+
+@keyframes details__swiper--from-left {
+    0% {
+        transform: translateX(-10%);
+    }
+
+    100% {
+        transform: translateX(0px);
     }
 }

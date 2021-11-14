@@ -35,7 +35,7 @@ const DeleteButton = ({ id, title }) => {
     return (
         <button
             onClick={onClickDelete}
-            className="delete-button">
+            className="button">
             <GrClose /> Supprimer
         </button>
     );
