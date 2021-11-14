@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Form from '../../components/Form/Form';
-import Navbar from '../../components/Navbar';
+import Navbar from '../../components/Navbar/Navbar';
 import MoviesService from '../../services/MoviesService';
 
 const Add = () => {

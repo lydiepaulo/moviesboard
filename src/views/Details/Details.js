@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Navbar from '../../components/Navbar';
+import Navbar from '../../components/Navbar/Navbar';
 import EditButton from '../../components/Buttons/EditButton';
 import MoviesService from '../../services/MoviesService';
 import DeleteButton from '../../components/Buttons/DeleteButton';

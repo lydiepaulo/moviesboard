@@ -1,0 +1,51 @@
+.nav {
+    &-bar {
+        display: flex;
+        align-items: center;
+        position: absolute;
+        z-index: 4;
+
+        // hover & placement
+        li {
+            width: 20px;
+
+            &:first-child .nav-link::after {
+                margin-top: 5px;
+            }
+
+            &:last-child {
+                margin: -10px 0 -5px 16px;
+                font-size: 1.5rem;
+            }
+        }
+    }
+
+    // color & style
+    &-link {
+        @include flexDirAlign(column, center);
+
+        path {
+            transition: all .3s;
+            stroke: $black;
+        }
+
+        &:hover path {
+            stroke: $white;
+        }
+
+        &::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 2px;
+            background-color: $white;
+            transition: width .5s;
+        }
+
+        &:hover::after,
+        &.activated::after {
+            width: 100%;
+            transition: width .5s;
+        }
+    }
+}

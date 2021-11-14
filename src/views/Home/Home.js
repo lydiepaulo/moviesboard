@@ -1,7 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Card from '../../components/Card/Card';
-import Navbar from '../../components/Navbar';
+import Navbar from '../../components/Navbar/Navbar';
+import { Swiper, SwiperSlide } from 'swiper/react/swiper-react.js';
+import 'swiper/swiper.scss';
+import 'swiper/modules/navigation/navigation.scss';
+import 'swiper/modules/pagination/pagination.scss';
 import MoviesService from '../../services/MoviesService';
+import { Navigation, Pagination } from 'swiper';
 
 const Home = () => {
     const [movies, setMovies] = useState(null)
@@ -61,12 +66,12 @@ const Home = () => {
     // delete card
     function deleteMovie({ data, id }) {
         MoviesService.remove(id)
-          .then(() => {
-            const newMovieArray = movies.filter((data) => data.id !== id);
-            setMovies(newMovieArray);
-          })
-          .catch((err) => console.error());
-      }
+            .then(() => {
+                const newMovieArray = movies.filter((data) => data.id !== id);
+                setMovies(newMovieArray);
+            })
+            .catch((err) => console.error());
+    }
 
     return (
         <div className="pages-background">
@@ -93,16 +98,39 @@ const Home = () => {
                     {errorMessage && <div className='error'>{errorMessage}</div>}
 
                     {myMovies && (
-                        <div className="home__horizontal-scroll">
+                        <Swiper
+                            className="home__horizontal-scroll"
+                            modules={[Navigation, Pagination]}
+                            spaceBetween={24}
+                            pagination={{
+                                "clickable": true
+                            }}
+                            navigation={true}
+                            slidesPerView={1}
+                            breakpoints={{
+                                768: {
+                                  width: 768,
+                                  slidesPerView: 2,
+                                },
+                                1024: {
+                                  width: 1024,
+                                  slidesPerView: 3,
+                                },
+                            }}
+                            onSlideChange={() => console.log('slide change')}
+                            onSwiper={(swiper) => console.log(swiper)}
+                        >
                             {myMovies !== 0 &&
-                                myMovies.map((data) => (
-                                    <Card key={data.id} onDelete={deleteMovie} id={data.id} data={data} />
+                                myMovies.map((data, slideContent, index) => (
+                                    <SwiperSlide key={slideContent} virtualIndex={index}>
+                                        <Card key={data.id} onDelete={deleteMovie} id={data.id} data={data} />
+                                    </SwiperSlide>
                                 ))
                             }
                             {myMovies.length === 0 &&
                                 <h2 class="title-medium">Ce film n'est pas présent dans la bibliothèque…</h2>
                             }
-                        </div>
+                        </Swiper>
                     )}
                 </div>
             </main>

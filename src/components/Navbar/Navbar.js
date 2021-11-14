@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { GrHome, GrFormSearch } from 'react-icons/gr';
 import { NavLink } from 'react-router-dom';
-import GlobalFunctions from '../services/GlobalFunctions';
+import GlobalFunctions from '../../services/GlobalFunctions';
 /* import favicon from '../assets/favicon.png' */
 
 const Navbar = () => {
