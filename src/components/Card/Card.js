@@ -4,8 +4,11 @@ import GlobalFunctions from '../../services/GlobalFunctions';
 import DeleteButton from '../Buttons/DeleteButton';
 import EditButton from '../Buttons/EditButton';
 
-const Card = ({ data }) => {
+const Card = ({ data, movie, onDelete }) => {
     const movieDate = data.release_date;
+    function clickDelete() {
+        onDelete(movie);
+    }
 
     return (
         <figure className="card smooth-apparition">
@@ -25,7 +28,11 @@ const Card = ({ data }) => {
                         {data.description}
                     </p>
                     <EditButton />
-                    <DeleteButton />
+
+                    {onDelete && (
+                        <DeleteButton onClick={clickDelete} />
+                    )}
+
                 </div>
             </figcaption>
         </figure>

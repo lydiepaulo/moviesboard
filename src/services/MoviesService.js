@@ -82,11 +82,7 @@ const MoviesService = {
         } catch (err) {
             return errorHandler(err);
         }
-    },
-
-    async fetchMoreData(movie_id) {
-        
-    },
+    }
 }
 
 const errorHandler = (err) => {

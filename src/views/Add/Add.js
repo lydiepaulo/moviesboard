@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import Form from '../components/Form/Form';
-import Navbar from '../components/Navbar';
-import MoviesService from '../services/MoviesService';
+import Form from '../../components/Form/Form';
+import Navbar from '../../components/Navbar';
+import MoviesService from '../../services/MoviesService';
 
 const Add = () => {
     const [errorMessage, setErrorMessage] = useState(null);
-
 
     function addMovie(data) {
         // Envoyer "data" vers le serveur POST /movies

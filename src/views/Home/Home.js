@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import Card from '../../components/Card/Card';
 import Navbar from '../../components/Navbar';
 import MoviesService from '../../services/MoviesService';
-import { LocomotiveScrollProvider } from 'react-locomotive-scroll'
 
 const Home = () => {
+    const [movies, setMovies] = useState(null)
     const [myMovies, setMyMovies] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
     const inputRef = useRef();
@@ -58,6 +58,16 @@ const Home = () => {
         }
     }
 
+    // delete card
+    function deleteMovie({ data, id }) {
+        MoviesService.remove(id)
+          .then(() => {
+            const newMovieArray = movies.filter((data) => data.id !== id);
+            setMovies(newMovieArray);
+          })
+          .catch((err) => console.error());
+      }
+
     return (
         <div className="pages-background">
             <Navbar />
@@ -86,7 +96,7 @@ const Home = () => {
                         <div className="home__horizontal-scroll">
                             {myMovies !== 0 &&
                                 myMovies.map((data) => (
-                                    <Card key={data.id} id={data.id} data={data} />
+                                    <Card key={data.id} onDelete={deleteMovie} id={data.id} data={data} />
                                 ))
                             }
                             {myMovies.length === 0 &&

@@ -15,9 +15,6 @@ const Home = () => {
             MoviesService.fetchMovies(id)
                 .then((apiResult) => {
                     setCardData(apiResult);
-                    console.log('====================================');
-                    console.log(apiResult);
-                    console.log('====================================');
                 });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -25,34 +22,51 @@ const Home = () => {
 
     return (
         <div className="details pages-background">
-            {cardData && 
+            {cardData &&
                 <div className="details-bg" style={{ backgroundImage: `url(${cardData.backdrop})` }}>
                     <Navbar />
                     <div class="details-main">
                         <h1 className="title-large">{cardData.title}</h1>
-                        {cardData.release_date}
-                        {cardData.categories}
-                        <img src={cardData.poster} alt="Couverture" />
 
-                        {/* actors */}
-                        {cardData.actors.map((actors, id) => (
-                                <div className="details-main__actor">
-                                    <img src={actors.photo} alt={actors.name} />
-                                    <span key={id}>{actors.name}</span>
-                                    <span key={id}>{actors.character}</span>
+                        <div className="details__grid">
+                            <div className="details__grid--bg2" style={{ backgroundImage: `url(${cardData.backdrop})` }}></div>
+                            <div className="details__grid--content">
+                                <div>
+                                    <img src={cardData.poster} alt="Couverture" />
+                                    {cardData.release_date}
+                                    {cardData.categories}
+
+
+
+                                    <EditButton key={id} id={id} />
+
+                                    <DeleteButton />
                                 </div>
-                            ))
-                        }
+                                <div>
+                                    <div className="details-main__content--list">
+                                        {/* actors */}
+                                        <div>
+                                            {cardData.actors.map((actors, id) => (
+                                                <div className="details-main__actor">
+                                                    <img src={actors.photo} alt={actors.name} />
+                                                    <span key={id}>{actors.name}</span>
+                                                    <span key={id}>{actors.character}</span>
+                                                </div>
+                                            ))
+                                            }
+                                        </div>
+                                        {/* similar movies */}
+                                        <div>
+                                            {cardData.similar_movies.map((movie, id) => (
+                                                <span key={id}>{movie.title}</span>
+                                            ))
+                                            }
+                                        </div>
+                                    </div>
 
-                        {/* similar movies */}
-                        {cardData.similar_movies.map((movie, id) => (
-                                <span key={id}>{movie.title}</span>
-                            ))
-                        }
-
-                        <EditButton key={id} id={id} />
-                        
-                        <DeleteButton />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             }

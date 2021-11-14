@@ -4,7 +4,7 @@ import { MdMovieFilter } from 'react-icons/md';
 
 const EditButton = (id) => {
     return (
-            <Link to={{ pathname: `/edit/${id}` }}>
+            <Link className="button" to={{ pathname: `/edit/${id}` }}>
                 <MdMovieFilter /> Éditer
             </Link>
         

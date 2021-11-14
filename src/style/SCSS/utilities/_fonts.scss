@@ -32,7 +32,7 @@ $Mulish: "Mulish", sans-serif;
         margin-left: auto;
         
         @include media-min($tablet) {
-            margin: -25px 0 40px;
+            margin: -10px 0 40px;
             text-align: center;
             @include Size-LH(5rem, 80%);
         }
