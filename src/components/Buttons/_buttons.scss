@@ -8,6 +8,7 @@ option {
     font-weight: 600;
     @extend %title-small;
     @include Size-LH(.58rem, 230%);
+
     svg {
         font-size: .8rem;
 
@@ -26,6 +27,7 @@ button,
 
 .home,
 .form {
+
     button,
     .button,
     option {
@@ -38,9 +40,11 @@ button,
     }
 }
 
-.home svg,
-.details svg {
-    margin: auto 4px auto 0;
+.home,
+.details {
+    .button {
+        margin: auto 4px auto 0;
+    }
 }
 
 .details .button {
@@ -50,6 +54,7 @@ button,
 }
 
 .card-buttons {
+
     button,
     .button {
         margin-left: 4px;
