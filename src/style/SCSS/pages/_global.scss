@@ -19,11 +19,6 @@
 
     color: $black;
     @include Mulish(400);
-
-    _:not(a,b), .safari_only {
-        background:red; 
-      
-    }
 }
 
 %gradient {
