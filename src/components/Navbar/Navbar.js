@@ -1,14 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { GrHome, GrFormSearch } from 'react-icons/gr';
 import { NavLink } from 'react-router-dom';
-import GlobalFunctions from '../../services/GlobalFunctions';
-/* import favicon from '../assets/favicon.png' */
 
 const Navbar = () => {
-    useEffect(() => {
-        GlobalFunctions.headerScroll()
-    }, [])
-
     return (
         <nav className="nav" id="nav">
             <ul className="nav-bar">
