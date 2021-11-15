@@ -23,14 +23,18 @@ const Home = () => {
     return (
         <div className="pages-background">
             <Navbar />
-
-            <div>
             {errorMessage && <div className='error'>{errorMessage}</div>}
             {dataMovie &&
-                <Form onValidation={updateMovie} movie={dataMovie} />
+                <div className="edit-main">
+                    <h1 className="title-large">
+                        <span>« {dataMovie.title} »</span>
+                        <span>Modifier</span>
+                    </h1>
+
+                    <Form onValidation={updateMovie} movie={dataMovie} />
+                </div>
             }
-            </div>
-        </div>
+        </div >
     );
 };
 

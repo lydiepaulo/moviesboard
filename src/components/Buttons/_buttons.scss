@@ -8,10 +8,8 @@ option {
     font-weight: 600;
     @extend %title-small;
     @include Size-LH(.58rem, 230%);
-
     svg {
         font-size: .8rem;
-        margin: auto 4px auto 0;
 
         path {
             stroke: $black;
@@ -26,7 +24,8 @@ button,
     border: 1px solid rgba($primary-light, .6);
 }
 
-.home {
+.home,
+.form {
     button,
     .button,
     option {
@@ -39,6 +38,11 @@ button,
     }
 }
 
+.home svg,
+.details svg {
+    margin: auto 4px auto 0;
+}
+
 .details .button {
     background-color: $white;
     box-shadow: inset 0 0 15px rgba($black, .3), 0 0 4px rgba($primary-dark, .4);
@@ -46,12 +50,17 @@ button,
 }
 
 .card-buttons {
-
     button,
     .button {
         margin-left: 4px;
         margin-right: 4px;
     }
+}
+
+.submit-button {
+    transform: scale(1.4);
+    margin-left: 22px;
+    margin-top: 30px;
 }
 
 select {

@@ -25,7 +25,7 @@
         }
     }
 
-    & > * {
+    &>* {
         grid-row: 1;
         grid-column: 1;
     }
@@ -80,6 +80,6 @@
     &:hover figcaption div {
         visibility: visible;
         opacity: 1;
-        height: 130px; 
+        height: 130px;
     }
 }

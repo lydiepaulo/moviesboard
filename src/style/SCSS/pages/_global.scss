@@ -5,7 +5,7 @@
     background-color: $primary-dark;
 
     &:not(.pages-background.details),
-    .details-bg {
+    .details-structure {
         @extend %gradient;
 
         @include media-min($tablet) {
@@ -13,12 +13,17 @@
         }
 
         @include media-max($tablet) {
-            padding: 8px;
+            padding: 24px 8px;
         }
     }
 
     color: $black;
     @include Mulish(400);
+
+    _:not(a,b), .safari_only {
+        background:red; 
+      
+    }
 }
 
 %gradient {
@@ -31,6 +36,7 @@
 
 .swiper {
     width: 100vw;
+
     &-button-prev:after,
     &-button-next:after {
         color: lighten($white, 100%) !important;
@@ -40,7 +46,7 @@
         margin-left: -100px !important;
         margin-right: -100px !important;
     }
-    
+
     @include media-max($tablet) {
         margin-left: -8px !important;
         margin-right: -8px !important;
@@ -50,7 +56,7 @@
         @include media-min($tablet) {
             margin-bottom: 113px;
         }
-        
+
         @include media-max($tablet) {
             margin-bottom: 113px;
         }
@@ -62,7 +68,7 @@
         &-bullet {
             background-color: darken($primary-dark, 20%) !important;
             box-shadow: inset 2px 2px 2px darken($primary-dark, 100%);
-    
+
             &-active {
                 background-color: lighten($white, 50%) !important;
                 box-shadow: inset 0 0 5px darken($white, 10%), 0 0 4px rgba($primary-dark, 10%);
@@ -73,4 +79,8 @@
     .card {
         margin: 0 auto;
     }
+}
+
+.edit-main {
+    padding-top: 50px;
 }

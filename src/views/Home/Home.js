@@ -90,7 +90,7 @@ const Home = () => {
                         <Swiper
                             className="home__horizontal-scroll"
                             modules={[Navigation, Pagination]}
-                            spaceBetween={24}
+                            spaceBetween={10}
                             pagination={{
                                 "clickable": true
                             }}

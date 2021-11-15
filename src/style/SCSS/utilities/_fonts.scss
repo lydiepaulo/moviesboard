@@ -29,27 +29,31 @@ $Mulish: "Mulish", sans-serif;
         @include Hashira(400);
         text-shadow: 1px 1px 0 $white;
         margin-left: auto;
+        text-align: center;
         
-        @include media-min($tablet) {
+        @include media-min($desktop) {
             margin: -10px 0 40px;
-            text-align: center;
             @include Size-LH(5rem, 80%);
         }
 
+        @include media-between($tablet, $desktop) {
+            @include Size-LH(5rem, 80%);
+            margin: 50px 0 30px;
+        }
+        
         @include media-max($tablet) {
             @include Size-LH(4rem, 75%);
             margin: 50px 0 30px;
-            text-align: center;
         }
 
         span {
             display: block;
 
             &:last-child {
-                @include media-min($tablet) {
+                @include media-min($mobile) {
                     @include Size-LH(10rem, 80%);
                 }
-                @include media-max($tablet) {
+                @include media-max($mobile) {
                     @include Size-LH(6rem, 75%);
                 }
                 text-transform: uppercase;

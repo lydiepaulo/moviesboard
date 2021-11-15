@@ -1,18 +1,190 @@
 .form {
-    &__error-message {
-        color: red;
+    margin-bottom: 50px;
+
+    &__step {
+        @include flexAlign(flex-end);
+        margin-bottom: 10px;
     }
 
-    section {
-        &.block {
-            display: block;
-        }
-        &.hidden {
-            display: none;
+    &__previous {
+        margin-right: 10px;
+        padding: 3px;
+        width: 20px;
+        height: 20px;
+        @include flexJustAlign(center, center);
+
+        polyline {
+            stroke: $white;
+            stroke-width: 5px;
         }
     }
 
     button:disabled {
         color: lightgrey;
     }
+
+    &__error-message {
+        color: red;
+    }
+
+    .title-medium {
+        margin-top: 24px;
+        margin-bottom: 24px;
+        max-width: 70%;
+    }
+
+    label {
+        display: block;
+
+        &.title-small {
+            display: block;
+            margin-top: 10px;
+
+            &::after {
+                content: " :";
+            }
+        }
+    }
+
+    input[type="text"],
+    input[type="url"],
+    textarea {
+        display: block;
+        background-color: rgba($white, .6);
+        margin-bottom: 15px;
+        padding: 10px 20px;
+        border-radius: 20px;
+        max-width: 500px;
+        width: 100%;
+        font-size: 1rem;
+    }
+
+    textarea {
+        height: 200px;
+    }
+
+    section {
+        &.block {
+            display: block;
+        }
+
+        &.hidden {
+            display: none;
+        }
+    }
+
+    &__select {
+        position: relative;
+
+        ul {
+            position: absolute;
+            background-color: $white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            width: 280px;
+            z-index: 1;
+
+            li {
+                padding-bottom: 4px;
+                border-bottom: 1px solid rgba($primary-dark, .3);
+                margin-bottom: 8px;
+                color: $black;
+                cursor: pointer;
+                opacity: .6;
+                transition: opacity .3s;
+
+                &:hover {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+
+    &__actors {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, 200px);
+        gap: 30px;
+        text-align: center;
+        margin-bottom: 50px;
+
+        div {
+            width: 200px;
+            background-color: lighten($primary-dark, 14%);
+            padding: 10px;
+            border-radius: 20px;
+            border: 1px solid $white;
+            box-shadow: 0 75px 55px -20px $primary-dark, inset 0 0 40px $primary-light;
+        }
+
+        img {
+            width: 180px;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 10px;
+        }
+    }
+
+    &__success {
+        margin: 0 auto;
+        max-width: 400px;
+        width: 100%;
+        background-color: lighten($primary-dark, 14%);
+        padding: 20px;
+        border-radius: 20px;
+        border: 1px solid $white;
+        box-shadow: 0 75px 55px -20px $primary-dark, inset 0 0 40px $primary-light;
+        text-align: center;
+
+        p {
+            font-size: 1.2rem;
+        }
+
+        button,
+        .button {
+            display: block;
+            margin: 20px auto 0;
+            max-width: 200px;
+        }
+    }
+
+    input[type="checkbox"] {
+        display: inline-grid;
+        place-content: center;
+        appearance: none;
+        background-color: #fff;
+        margin: 0 10px 0 0;
+        font: inherit;
+        color: currentColor;
+        width: 17px;
+        height: 17px;
+        border: 1px solid darken($primary-dark, 10%);
+        border-radius: 10px;
+        transform: translateY(-1px);
+
+        &::before {
+            content: "";
+            width: 10.4px;
+            height: 10.4px;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            box-shadow: inset 16px 16px $primary-dark;
+            transform-origin: bottom left;
+            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        }
+
+        &:checked::before {
+            transform: scale(1);
+        }
+
+        &:focus {
+            outline: max(1px, 1px) solid $primary-light;
+            outline-offset: max(1px, 1px);
+          }
+    }
+
+    &__checkbox + .form__checkbox {
+        margin-top: 1em;
+      }
+
 }

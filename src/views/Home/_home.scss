@@ -47,11 +47,6 @@
     }
 
     .swiper-wrapper {
-        @include media-min($tablet) {
-            padding-top: 30px !important;
-        }
-        @include media-max($tablet) {
-            padding-top: 30px !important;
-        }
+        padding-top: 30px !important;
     }
 }

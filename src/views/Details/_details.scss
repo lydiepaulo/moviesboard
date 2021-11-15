@@ -1,10 +1,35 @@
 .details {
     position: relative;
 
+    .title-large {
+        text-align: right;
+
+        @include media-min($tablet) {
+            margin-left: 60px;
+        }
+    }
+
     &-buttons {
         @include flexJust(flex-end);
+        position: relative;
         z-index: 2;
         margin-bottom: -45px;
+    }
+
+    .details-structure,
+    .title-large,
+    .details-buttons {
+        @include media-between($tablet, $desktop) {
+            margin-right: 100px;
+        }
+
+        @include media-max($tablet) {
+            margin-right: 48px;
+        }
+
+        @include media-max($tablet) {
+            margin-right: 8px;
+        }
     }
 
     &-bg {
@@ -14,22 +39,16 @@
         position: fixed;
 
         &::after {
-            width: 100vw;
-            height: 100vh;
+            content: '';
             position: absolute;
+            display: block;
+            height: 100%;
+            width: 100%;
             top: 0;
             left: 0;
             @extend %gradient;
             background-color: rgba($primary-dark, .4);
             backdrop-filter: blur(40px);
-        }
-
-        &::after,
-        .details__swiper--bg2::after {
-            content: '';
-            display: block;
-            height: 100%;
-            width: 100%;
         }
     }
 
@@ -53,13 +72,18 @@
             grid-column: 1;
             width: 100%;
             height: calc(100vh - 250px);
+            min-height: 700px;
             border-radius: 20px;
             box-shadow: 0 55px 75px -20px rgba($black, .2);
             background-position: center;
             background-size: auto 180%;
-            animation: background-image 5s ease forwards;
+            animation: background-image 3s ease forwards;
 
             &::after {
+                content: '';
+                display: block;
+                height: 100%;
+                width: 100%;
                 background-color: $black;
                 opacity: .2;
                 animation: background-image__darken 3s ease forwards;
@@ -81,7 +105,7 @@
 
             div:first-child {
                 img {
-                    height: 400px;
+                    height: 380px;
                 }
 
                 @include media-max($tablet) {
@@ -99,7 +123,8 @@
         }
 
         &--from-left {
-            animation: details__swiper--from-left 5s ease forwards;
+            opacity: 0;
+            animation: details__swiper--from-left 3s ease forwards;
         }
 
         &--description {
@@ -142,7 +167,7 @@
             height: 100%;
             color: $white;
             text-align: right;
-            
+
             &-list {
                 font-size: 1.3rem;
                 height: 400px;
@@ -163,6 +188,7 @@
     .swiper {
         &-wrapper {
             height: calc(100vh - 250px);
+            min-height: 700px;
         }
 
         &-slide {
@@ -171,6 +197,10 @@
             }
 
             @include media-max($tablet) {
+                padding: 30px 48px;
+            }
+
+            @include media-max($mobile) {
                 padding: 30px 8px;
             }
 
@@ -215,10 +245,16 @@
 
 @keyframes details__swiper--from-left {
     0% {
-        transform: translateX(-10%);
+        transform: translateX(-20%);
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 0;
     }
 
     100% {
+        opacity: 1;
         transform: translateX(0px);
     }
 }

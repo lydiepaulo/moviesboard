@@ -4,8 +4,7 @@ import MoviesService from '../../services/MoviesService';
 import axios from "axios";
 import { Link } from 'react-router-dom';
 
-
-const MAX_STEPS = 3;
+const MAX_STEPS = 2;
 
 const TMDB_CALL = `https://api.themoviedb.org/3/`;
 const API_KEY = `?api_key=${process.env.REACT_APP_TMDB_API_KEY}`;
@@ -137,6 +136,7 @@ const Form = (props) => {
         if (formStep === 1) {
             return (
                 <button
+                    className="form__previous"
                     onClick={previousFormStep}
                     type="button"
                 >
@@ -173,7 +173,7 @@ const Form = (props) => {
                 actors: props.movie.actors,
                 similar_movies: props.movie.similar_movies,
             })
-            
+
         }
     }, [props.movie]);
 
@@ -191,7 +191,7 @@ const Form = (props) => {
     // go back to Homepage
     const backToHome = () => {
         return (
-            <Link to={{ pathname: "/" }}>
+            <Link className="button" to={{ pathname: "/" }}>
                 <GrHome /> Retourner à l'accueil
             </Link>
         )
@@ -201,21 +201,21 @@ const Form = (props) => {
         <div>
             <form onSubmit={onSubmit} action="#" className="form">
                 {formStep < MAX_STEPS && (
-                    <div>
+                    <div class="form__step">
                         {renderPrevButton()}
-                        <span>Étape {formStep + 1} sur {MAX_STEPS}</span>
+                        <span className="title-small"> {formStep + 1} sur {MAX_STEPS}</span>
                     </div>
                 )}
 
                 {/* first step */}
                 {formStep >= 0 && (
                     <section className={formStep === 0 ? "block" : "hidden"}>
-                        <h2 className="title-small">
-                            Trouver un film par titre ou date de sortie
-                        </h2>
+                        <div className="title-medium">
+                            Sélectionner un film
+                        </div>
                         {/* title */}
-                        <div>
-                            <label htmlFor="title">Titre</label>
+                        <div class="form__select">
+                            <label className="title-small" htmlFor="title">Titre</label>
                             <input
                                 type="text"
                                 id="title-id"
@@ -237,7 +237,7 @@ const Form = (props) => {
                         </div>
 
                         <div>
-                            <label htmlFor="date">Date de sortie</label>
+                            <label className="title-small" htmlFor="date">Date de sortie</label>
                             <input
                                 type="text"
                                 id="date"
@@ -253,42 +253,42 @@ const Form = (props) => {
                 {/* second step */}
                 {formStep >= 1 && (
                     <section className={formStep === 1 ? "block" : "hidden"}>
-                        <h2 className="title-small">Personnaliser l'ajout</h2>
+                        <h2 className="title-medium">Personnaliser l'ajout</h2>
                         {/* categories */}
                         <div>
-                            <label key="key" htmlFor="categories">
-                                <span>Catégories</span>
-                                {inputs &&
-                                    inputs.categories.map((categorie, id) => (
-                                        <label key={id}>
-                                            {categorie}
-                                            <input
-                                                name="categories"
-                                                type="checkbox"
-                                                value={categorie}
-                                                defaultChecked={checked}
-                                                onChange={() => setChecked(!checked)}
+                            <label className="title-small form__checkbox" key="key" htmlFor="categories">Catégories</label>
+                            {inputs &&
+                                inputs.categories.map((categorie, id) => (
+                                    <label key={id}>
+                                        <input
+                                            name="categories"
+                                            type="checkbox"
+                                            value={categorie}
+                                            defaultChecked={checked}
+                                            onChange={() => setChecked(!checked)}
                                             />
-                                        </label>
-                                    ))}
-                            </label>
+                                        {categorie}
+                                    </label>
+                                ))}
+
                         </div>
 
                         {/* description */}
                         <div>
-                            <label htmlFor="description">Description</label>
-                            <input
+                            <label className="title-small" htmlFor="description">Description</label>
+                            <textarea
                                 type="textarea"
                                 id="description"
                                 name="description"
                                 onChange={handleChange}
                                 value={inputs.description}
-                            />
+                            >
+                            </textarea>
                         </div>
 
                         {/* poster */}
                         <div>
-                            <label htmlFor="poster">Affiche (url)</label>
+                            <label className="title-small" htmlFor="poster">Affiche (url)</label>
                             <input
                                 type="url"
                                 name="poster"
@@ -302,7 +302,7 @@ const Form = (props) => {
 
                         {/* backdrop */}
                         <div>
-                            <label htmlFor="backdrop">Bannière de fond (url)</label>
+                            <label className="title-small" htmlFor="backdrop">Bannière de fond (url)</label>
                             <input
                                 type="url"
                                 name="backdrop"
@@ -316,19 +316,14 @@ const Form = (props) => {
                         </div>
 
                         {/* actors */}
-                        <div>
-                            <label htmlFor="actors">
-                                <span>Acteur·ice·s</span>
+                            <div>
+                                <label className="title-small" htmlFor="actors">Acteur·ice·s</label>
                                 {inputs.actors && inputs.actors.length !== 0 && (
-                                    <ul>
+                                    <div className="form__actors">
                                         {inputs.actors.map((actors, index) =>
-                                            <li key={index}>
-                                                <span>Photo</span>
-                                                <img src={actors.photo} alt={`${actors.name}`} width={100} />
-                                                <span>Acteur·ice</span>
+                                            <div key={index}>
+                                                <img src={actors.photo} alt={`${actors.name}`} />
                                                 <h3>{actors.name}</h3>
-                                                <span>Rôle</span>
-
                                                 <h3>{actors.character}</h3>
                                                 <button type="button" onClick={() => {
                                                     setInputs({
@@ -338,31 +333,23 @@ const Form = (props) => {
                                                 }}>
                                                     Delete
                                                 </button>
-                                            </li>
+                                            </div>
                                         )}
-                                    </ul>
+                                    </div>
                                 )}
 
-                            </label>
-                        </div>
+                            </div>
 
                         {/* similar movies */}
-                        <div>
-                            <label htmlFor="similar">
-                                <span>Films du même genre</span>
+                            <div>
+                                <label className="title-small" htmlFor="similar">Films du même genre</label>
                                 {inputs.similar_movies && inputs.similar_movies.length !== 0 && (
-                                    <ul>
+                                    <div className="form__actors">
                                         {inputs.similar_movies.map((movies, index) =>
-                                            <li key={index}>
+                                            <div key={index}>
 
-                                                <span>Poster</span>
                                                 <img src={movies.poster} alt={`${movies.title}`} width={100} />
-
-                                                <span>Titre</span>
                                                 <h3>{movies.title}</h3>
-
-                                                <span>Date</span>
-
                                                 <h3>{movies.release_date}</h3>
 
                                                 <button type="button" onClick={() => {
@@ -373,27 +360,27 @@ const Form = (props) => {
                                                 }}>
                                                     Delete
                                                 </button>
-                                            </li>
+                                            </div>
                                         )}
-                                    </ul>
+                                    </div>
                                 )}
 
-                            </label>
-                        </div>
+                            </div>
                     </section>
                 )}
 
                 {/* third step */}
                 {formStep === 2 ? (
                     <section>
-                        <h2>Bien joué !</h2>
+                        <div className="form__success">
+                        <p>Bien joué !</p>
                         <p>Le film a été ajouté/modifié avec succès.</p>
                         {newMovieButton()}
-                        {backToHome()}
+                        {backToHome()}</div>
 
                     </section>
                 )
-                    : <button type="submit"> {formStep ? "Valider" : "Rechercher"}</button>
+                    : <button className="submit-button" type="submit"> {formStep ? "Valider" : "Rechercher"}</button>
                 }
 
             </form>
