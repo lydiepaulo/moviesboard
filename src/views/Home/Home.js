@@ -85,7 +85,16 @@ const Home = () => {
                 <div>
                     {/* GÉRER CAS D'ERREUR SERVEUR : ne fonctionne pas pour l'instant */}
                     {errorMessage && <div className='error'>{errorMessage}</div>}
-
+                    {myMovies && (
+                        <div>
+                            {
+                                myMovies.length === 0 &&
+                                <div className="home__no-result">
+                                    <h2 class="title-medium">Ce film n'est pas présent dans la bibliothèque…</h2>
+                                </div>
+                            }
+                        </div>
+                    )}
                     {myMovies && (
                         <Swiper
                             className="home__horizontal-scroll"
@@ -98,12 +107,12 @@ const Home = () => {
                             slidesPerView={1}
                             breakpoints={{
                                 768: {
-                                  width: 768,
-                                  slidesPerView: 2,
+                                    width: 768,
+                                    slidesPerView: 2,
                                 },
                                 1024: {
-                                  width: 1024,
-                                  slidesPerView: 3,
+                                    width: 1024,
+                                    slidesPerView: 3,
                                 },
                             }}
                         >
@@ -113,9 +122,6 @@ const Home = () => {
                                         <Card key={data.id} id={data.id} data={data} />
                                     </SwiperSlide>
                                 ))
-                            }
-                            {myMovies.length === 0 &&
-                                <h2 class="title-medium">Ce film n'est pas présent dans la bibliothèque…</h2>
                             }
                         </Swiper>
                     )}

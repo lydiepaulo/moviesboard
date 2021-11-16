@@ -41,6 +41,7 @@
         @include media-min($tablet) {
             margin-top: 50px !important;
         }
+
         @include media-max($tablet) {
             margin: 50px -8px 0 !important;
         }

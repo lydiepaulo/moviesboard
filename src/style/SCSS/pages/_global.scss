@@ -7,7 +7,11 @@
     &:not(.pages-background.details),
     .details-structure {
         @extend %gradient;
-
+    }
+    
+    &:not(.pages-background.details),
+    .details-structure,
+    .home__no-result {
         @include media-min($tablet) {
             padding: 50px 100px 0;
         }
