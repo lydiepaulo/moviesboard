@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/moviesboard/static/css/main.5022240a.chunk.css",
+    "main.js": "/moviesboard/static/js/main.487b9538.chunk.js",
+    "main.js.map": "/moviesboard/static/js/main.487b9538.chunk.js.map",
+    "runtime-main.js": "/moviesboard/static/js/runtime-main.4a6c9510.js",
+    "runtime-main.js.map": "/moviesboard/static/js/runtime-main.4a6c9510.js.map",
+    "static/css/2.50a816e4.chunk.css": "/moviesboard/static/css/2.50a816e4.chunk.css",
+    "static/js/2.58c9bbc5.chunk.js": "/moviesboard/static/js/2.58c9bbc5.chunk.js",
+    "static/js/2.58c9bbc5.chunk.js.map": "/moviesboard/static/js/2.58c9bbc5.chunk.js.map",
+    "static/js/3.2baad533.chunk.js": "/moviesboard/static/js/3.2baad533.chunk.js",
+    "static/js/3.2baad533.chunk.js.map": "/moviesboard/static/js/3.2baad533.chunk.js.map",
+    "index.html": "/moviesboard/index.html",
+    "static/css/2.50a816e4.chunk.css.map": "/moviesboard/static/css/2.50a816e4.chunk.css.map",
+    "static/css/main.5022240a.chunk.css.map": "/moviesboard/static/css/main.5022240a.chunk.css.map",
+    "static/js/2.58c9bbc5.chunk.js.LICENSE.txt": "/moviesboard/static/js/2.58c9bbc5.chunk.js.LICENSE.txt",
+    "static/media/App.scss": "/moviesboard/static/media/hashira_mt-webfont.e2ffb301.woff2"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.4a6c9510.js",
+    "static/css/2.50a816e4.chunk.css",
+    "static/js/2.58c9bbc5.chunk.js",
+    "static/css/main.5022240a.chunk.css",
+    "static/js/main.487b9538.chunk.js"
+  ]
+}
