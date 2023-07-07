@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_CALL = 'http://localhost:3000';
+const API_CALL = 'https://moviesboard-back.vercel.app';
 const TMDB_CALL = `https://api.themoviedb.org/3/`;
 const API_KEY = `?api_key=${process.env.REACT_APP_TMDB_API_KEY}`;
 
@@ -20,9 +20,11 @@ const MoviesService = {
         try {
             const response = await axios
                 .get(url);
+
             return response.data;
 
         } catch (err) {
+            console.log(err)
             return errorHandler(err);
         }
     },

@@ -35,10 +35,10 @@ const Home = () => {
                     <div className="details-bg" style={{ backgroundImage: `url(${cardData.backdrop})` }}></div>
                     <div className="details-structure">
                         <Navbar />
-                        <div class="details-main">
+                        <div className="details-main">
                             <h1 className="title-large">{cardData.title}</h1>
 
-                            <div class="details-buttons">
+                            <div className="details-buttons">
                                 <EditButton key={id} id={id} />
                                 <DeleteButton id={cardData.id} title={cardData.title} />
                             </div>
@@ -86,7 +86,7 @@ const Home = () => {
                                                 <div>
                                                     <img src={actors.photo} alt={actors.name} />
                                                     <span key={id}>{actors.name}</span>
-                                                    <span key={id} class="title-small">{actors.character}</span>
+                                                    <span key={id} className="title-small">{actors.character}</span>
                                                 </div>
                                             ))
                                             }

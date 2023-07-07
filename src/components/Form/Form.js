@@ -201,7 +201,7 @@ const Form = (props) => {
         <div>
             <form onSubmit={onSubmit} action="#" className="form">
                 {formStep < MAX_STEPS && (
-                    <div class="form__step">
+                    <div className="form__step">
                         {renderPrevButton()}
                         <span className="title-small"> {formStep + 1} sur {MAX_STEPS}</span>
                     </div>
@@ -214,7 +214,7 @@ const Form = (props) => {
                             Sélectionner un film
                         </div>
                         {/* title */}
-                        <div class="form__select">
+                        <div className="form__select">
                             <label className="title-small" htmlFor="title">Titre</label>
                             <input
                                 type="text"
@@ -266,7 +266,7 @@ const Form = (props) => {
                                             value={categorie}
                                             defaultChecked={checked}
                                             onChange={() => setChecked(!checked)}
-                                            />
+                                        />
                                         {categorie}
                                     </label>
                                 ))}
@@ -316,56 +316,56 @@ const Form = (props) => {
                         </div>
 
                         {/* actors */}
-                            <div>
-                                <label className="title-small" htmlFor="actors">Acteur·ice·s</label>
-                                {inputs.actors && inputs.actors.length !== 0 && (
-                                    <div className="form__actors">
-                                        {inputs.actors.map((actors, index) =>
-                                            <div key={index}>
-                                                <img src={actors.photo} alt={`${actors.name}`} />
-                                                <h3>{actors.name}</h3>
-                                                <h3>{actors.character}</h3>
-                                                <button type="button" onClick={() => {
-                                                    setInputs({
-                                                        ...inputs,
-                                                        actors: inputs.actors.filter(actor => actor.name !== actors.name)
-                                                    })
-                                                }}>
-                                                    Delete
-                                                </button>
-                                            </div>
-                                        )}
-                                    </div>
-                                )}
+                        <div>
+                            <label className="title-small" htmlFor="actors">Acteur·ice·s</label>
+                            {inputs.actors && inputs.actors.length !== 0 && (
+                                <div className="form__actors">
+                                    {inputs.actors.map((actors, index) =>
+                                        <div key={index}>
+                                            <img src={actors.photo} alt={`${actors.name}`} />
+                                            <h3>{actors.name}</h3>
+                                            <h3>{actors.character}</h3>
+                                            <button type="button" onClick={() => {
+                                                setInputs({
+                                                    ...inputs,
+                                                    actors: inputs.actors.filter(actor => actor.name !== actors.name)
+                                                })
+                                            }}>
+                                                Delete
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
 
-                            </div>
+                        </div>
 
                         {/* similar movies */}
-                            <div>
-                                <label className="title-small" htmlFor="similar">Films du même genre</label>
-                                {inputs.similar_movies && inputs.similar_movies.length !== 0 && (
-                                    <div className="form__actors">
-                                        {inputs.similar_movies.map((movies, index) =>
-                                            <div key={index}>
+                        <div>
+                            <label className="title-small" htmlFor="similar">Films du même genre</label>
+                            {inputs.similar_movies && inputs.similar_movies.length !== 0 && (
+                                <div className="form__actors">
+                                    {inputs.similar_movies.map((movies, index) =>
+                                        <div key={index}>
 
-                                                <img src={movies.poster} alt={`${movies.title}`} width={100} />
-                                                <h3>{movies.title}</h3>
-                                                <h3>{movies.release_date}</h3>
+                                            <img src={movies.poster} alt={`${movies.title}`} width={100} />
+                                            <h3>{movies.title}</h3>
+                                            <h3>{movies.release_date}</h3>
 
-                                                <button type="button" onClick={() => {
-                                                    setInputs({
-                                                        ...inputs,
-                                                        similar_movies: inputs.similar_movies.filter(movie => movie.title !== movies.title)
-                                                    })
-                                                }}>
-                                                    Delete
-                                                </button>
-                                            </div>
-                                        )}
-                                    </div>
-                                )}
+                                            <button type="button" onClick={() => {
+                                                setInputs({
+                                                    ...inputs,
+                                                    similar_movies: inputs.similar_movies.filter(movie => movie.title !== movies.title)
+                                                })
+                                            }}>
+                                                Delete
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
 
-                            </div>
+                        </div>
                     </section>
                 )}
 
@@ -373,10 +373,10 @@ const Form = (props) => {
                 {formStep === 2 ? (
                     <section>
                         <div className="form__success">
-                        <p>Bien joué !</p>
-                        <p>Le film a été ajouté/modifié avec succès.</p>
-                        {newMovieButton()}
-                        {backToHome()}</div>
+                            <p>Bien joué !</p>
+                            <p>Le film a été ajouté/modifié avec succès.</p>
+                            {newMovieButton()}
+                            {backToHome()}</div>
 
                     </section>
                 )

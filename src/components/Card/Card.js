@@ -24,7 +24,7 @@ const Card = ({ data }) => {
                     <p className="card-description">
                         {data.description}
                     </p>
-                    <div class="card-buttons">
+                    <div className="card-buttons">
                         <EditButton id={data.id} />
                         <DeleteButton id={data.id} title={data.title} />
                     </div>

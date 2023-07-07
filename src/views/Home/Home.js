@@ -9,7 +9,7 @@ import 'swiper/modules/pagination/pagination.scss';
 import MoviesService from '../../services/MoviesService';
 
 const Home = () => {
-    const [myMovies, setMyMovies] = useState(null);
+    const [myMovies, setMyMovies] = useState([]);
     const [errorMessage, setErrorMessage] = useState(null);
     const inputRef = useRef();
     const filterRef = useRef();
@@ -72,7 +72,6 @@ const Home = () => {
                 </h1>
 
                 <div className="home__search">
-                    {/* <h2 class="title-medium">Consulter par filtres :</h2> */}
                     <input className="home__search-bar" ref={inputRef} onKeyDown={onKeyDown} type="search" placeholder="Titre, date de sortie, catégorie" id="search-bar" />
                     <select ref={filterRef} onChange={filteredSearch} name="filter" id="filter-select" className="home__search--select" multiple>
                         <option value="tout">Tout</option>
@@ -90,7 +89,7 @@ const Home = () => {
                             {
                                 myMovies.length === 0 &&
                                 <div className="home__no-result">
-                                    <h2 class="title-medium">Ce film n'est pas présent dans la bibliothèque…</h2>
+                                    <h2 className="title-medium">Ce film n'est pas présent dans la bibliothèque…</h2>
                                 </div>
                             }
                         </div>
